@@ -26,8 +26,8 @@ export default function DeployMark({ className = "" }: { className?: string }) {
         </g>
         {/* editor window */}
         <g transform="translate(660 870.624)">
-          <rect width="416" height="188" rx="12" transform="translate(-0.34 -0.308)" fill="#20222c" />
-          <rect width="416" height="26" rx="12" transform="translate(-0.34 -0.308)" fill="#181a22" />
+          <rect width="416" height="188" rx="12" transform="translate(-0.34 -0.308)" fill="#2b2e3a" />
+          <rect width="416" height="26" rx="12" transform="translate(-0.34 -0.308)" fill="#20232e" />
           <g transform="translate(44.967 49.189)" fill="#3b5bff">
             <rect width="50.069" height="12.053" rx="3.565" transform="translate(63.05)" />
             <rect width="17.616" height="12.053" rx="3.565" transform="translate(268.889)" />

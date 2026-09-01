@@ -201,7 +201,18 @@ export default function Page() {
                         </>
                       )}
                     </p>
-                    <p className="mt-2.5 text-body">{r.detail}</p>
+                    {r.detail && <p className="mt-2.5 text-body">{r.detail}</p>}
+                    {r.io && <IOPanel inputs={r.io.in} output={r.io.out} />}
+                    {r.bullets && (
+                      <ul className="mt-4 space-y-2 text-[0.95rem] text-muted">
+                        {r.bullets.map((d) => (
+                          <li key={d} className="flex gap-3">
+                            <span aria-hidden className="mt-[0.6em] block h-px w-3 shrink-0 bg-line" />
+                            <span>{d}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
                   </div>
                 </Reveal>
               ))}

@@ -9,17 +9,21 @@
 */
 
 @theme {
-  --color-ink: #101117;
-  --color-ink-2: #14151d;
-  --color-panel: #181a22;
-  --color-panel-2: #1d1f29;
-  --color-line: #363a48;
-  --color-line-soft: #262932;
+  /* Surface ladder — each step is a visible tonal jump, not just a token rename.
+     base #0e0f14 -> zone #161822 -> zone-2 #1d202a -> panel #282b37 -> panel-2 #2e313d */
+  --color-ink: #0e0f14; /* page base: hero, toolkit */
+  --color-ink-2: #131520; /* gradient tails only */
+  --color-zone: #161822; /* Work, Contact zones (+~10/ch over base) */
+  --color-zone-2: #1d202a; /* Research, Path zones (+~9/ch over --zone) */
+  --color-panel: #282b37; /* module cards, chips (+~11/ch over --zone-2) */
+  --color-panel-2: #2e313d; /* module bars, stat cells */
+  --color-line: #3d4150;
+  --color-line-soft: #2a2d38;
   --color-paper: #edece7;
-  --color-body: #c8c9d2; /* ~10:1 on --ink */
-  --color-muted: #a3a5b3; /* ~5.7:1 — secondary text, labels */
-  --color-muted-2: #8b8d9b; /* ~4.6:1 — small labels, still AA for text */
-  --color-muted-3: #6f7180; /* ~3.2:1 — NON-TEXT only (separators, rules) */
+  --color-body: #c8c9d2; /* ~9:1 on the panels */
+  --color-muted: #a3a5b3; /* ~5:1 — secondary text, labels */
+  --color-muted-2: #9a9cab; /* ~4.5:1 on --panel-2 — small labels, still AA */
+  --color-muted-3: #6f7180; /* NON-TEXT only (separators, rules) */
   --color-signal: #3b5bff;
   --color-signal-soft: #7288ff;
   --color-live: #5fe3c7;
@@ -136,14 +140,17 @@ a {
   }
 }
 
-/* --- Zone: alternating raised surface so the page reads as chunks, not one sheet.
-   Full-bleed tint behind a section; the content still sits in the centred column. --- */
+/* --- Zone: full-bleed tint behind a section so the page reads as chunks, not one
+   sheet. Two tiers, each a clearly perceptible step over the page base
+   (--zone ~+10/channel, --zone-2 ~+19/channel). Content stays in the centred
+   column. A hairline top edge sharpens the boundary further. --- */
 .zone {
-  background: var(--color-ink-2);
-  border-block: 1px solid var(--color-line-soft);
+  background: var(--color-zone);
+  border-top: 1px solid var(--color-line-soft);
 }
 .zone--raised {
-  background: linear-gradient(180deg, var(--color-panel) 0%, var(--color-ink-2) 100%);
+  background: var(--color-zone-2);
+  border-top: 1px solid var(--color-line-soft);
 }
 
 /* --- Stat: the large-numeral readout for the two figures that matter (150+, 34th).
@@ -198,8 +205,9 @@ a {
 /* --- Module: the rack-panel frame shared by the hero I/O and every project --- */
 .module {
   border: 1px solid var(--color-line);
+  /* sits above every zone tier, so cards read as raised in any section */
   background:
-    linear-gradient(180deg, var(--color-panel) 0%, var(--color-ink-2) 100%);
+    linear-gradient(180deg, var(--color-panel-2) 0%, var(--color-panel) 100%);
 }
 .module__bar {
   display: flex;

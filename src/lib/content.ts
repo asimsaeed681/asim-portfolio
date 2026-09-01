@@ -123,7 +123,9 @@ export type Recognition = {
   org: string;
   since?: string;
   stat?: { value: string; unit: string };
-  detail: string;
+  detail?: string;
+  bullets?: string[];
+  io?: { in: string[]; out: string };
 };
 
 export const recognition: Recognition[] = [
@@ -149,6 +151,19 @@ export const recognition: Recognition[] = [
     title: "Indus AI Week",
     org: "February 2026",
     detail: "Selected for the Search and AI and Overview of AI tracks.",
+  },
+  {
+    tag: "R4",
+    title: "AI Hackathon — Drone Swarm Gala",
+    org: "January 2026",
+    io: {
+      in: ["Streamlit", "NewsAPI", "OpenAI GPT-4o-mini / vision", "PIL"],
+      out: "two working AI prototypes built under real-time hackathon constraints",
+    },
+    bullets: [
+      "A news-aggregation tool that refuses to synthesize a story until it has three or more distinct sources.",
+      "A multimodal image-understanding tool — upload or webcam in, a fixed five-point structured read-out (GPT-4o vision).",
+    ],
   },
 ];
 
@@ -204,6 +219,13 @@ export const experience: Role[] = [
     period: "May 2025 – present",
     detail:
       "Advise prospective international students on admissions requirements, credential evaluation, and visa-documentation compliance.",
+  },
+  {
+    title: "Intern, ISPR Directorate",
+    org: "Inter-Services Public Relations, GHQ Rawalpindi",
+    period: "Jul – Sep 2026",
+    detail:
+      "ISPR's national internship program. Hands-on exposure to media production, press communications, and strategic messaging alongside the PR, editorial, and social media teams.",
   },
   {
     title: "Operations Manager",
