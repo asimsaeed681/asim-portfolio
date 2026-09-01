@@ -22,7 +22,11 @@ export const person = {
 
 export const heroIO = {
   in: ["language models", "browser automation", "REST APIs", "C++ / STL"],
-  out: ["content pipelines", "a compression engine", "a shipped browser extension"],
+  out: [
+    "content pipelines",
+    "command-line C++ tooling",
+    "a shipped browser extension",
+  ],
 };
 
 export type Project = {
@@ -61,19 +65,22 @@ export const projects: Project[] = [
   },
   {
     tag: "W2",
-    title: "Huffman File Compression Engine",
+    title: "Word Frequency Analyzer",
     blurb:
-      "A command-line lossless compressor and decompressor written from scratch: it builds a Huffman tree from byte frequencies, then packs the variable-length codes into a bit-level output stream.",
+      "A command-line C++ tool that reads a text file, counts how often each word appears, and surfaces the ones carrying signal — longer than three characters, appearing more than twice, common stop words removed.",
     io: {
-      in: ["C++", "STL: priority_queue, unordered_map", "custom bit buffer"],
-      out: "smaller files that decompress byte-for-byte identical",
+      in: ["C++17", "STL: unordered_set, map", "erase–remove idiom"],
+      out: "an alphabetically sorted frequency table, printed and written to file",
     },
     detail: [
-      "Greedy tree construction over a frequency table, min-heap ordered.",
-      "Custom bitwise stream buffering to pack and unpack codes below the byte boundary.",
-      "Header carries the code table so a file can be decompressed on its own.",
+      "Stop words live in an unordered_set — O(1) lookups instead of O(log n).",
+      "Punctuation is stripped and case folded in place; length is checked before the set lookup, so short words never pay for it.",
+      "Column-aligned output through <iomanip>, mirrored to a results file.",
     ],
-    link: { label: "github.com/asimsaeed681", href: "https://github.com/asimsaeed681" },
+    link: {
+      label: "github.com/asimsaeed681/word-frequency-analyzer",
+      href: "https://github.com/asimsaeed681/word-frequency-analyzer",
+    },
   },
   {
     tag: "W3",

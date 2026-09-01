@@ -12,14 +12,17 @@
   --color-ink: #101117;
   --color-ink-2: #14151d;
   --color-panel: #181a22;
-  --color-line: #2a2d39;
-  --color-line-soft: #21232e;
-  --color-paper: #e9e8e3;
-  --color-muted: #8b8d9c;
-  --color-muted-2: #61636f;
+  --color-panel-2: #1d1f29;
+  --color-line: #363a48;
+  --color-line-soft: #262932;
+  --color-paper: #edece7;
+  --color-body: #c8c9d2; /* ~10:1 on --ink */
+  --color-muted: #a3a5b3; /* ~5.7:1 — secondary text, labels */
+  --color-muted-2: #8b8d9b; /* ~4.6:1 — small labels, still AA for text */
+  --color-muted-3: #6f7180; /* ~3.2:1 — NON-TEXT only (separators, rules) */
   --color-signal: #3b5bff;
-  --color-signal-soft: #5b74ff;
-  --color-live: #57e1c4;
+  --color-signal-soft: #7288ff;
+  --color-live: #5fe3c7;
 
   --font-display: var(--font-bricolage), ui-sans-serif, system-ui, sans-serif;
   --font-body: var(--font-hanken), ui-sans-serif, system-ui, sans-serif;
@@ -66,6 +69,25 @@ a {
   text-decoration: none;
 }
 
+/* Skip link — visually hidden until focused */
+.skip-link {
+  position: fixed;
+  top: 0.75rem;
+  left: 0.75rem;
+  z-index: 60;
+  transform: translateY(-150%);
+  transition: transform 0.15s ease;
+  background: var(--color-panel-2);
+  border: 1px solid var(--color-signal);
+  color: var(--color-paper);
+  padding: 0.5rem 0.9rem;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+}
+.skip-link:focus {
+  transform: translateY(0);
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -84,7 +106,7 @@ a {
   font-family: var(--font-mono);
   font-size: 0.7rem;
   font-weight: 500;
-  letter-spacing: 0.22em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--color-muted);
 }
@@ -107,6 +129,39 @@ a {
   max-width: 40rem;
 }
 
+/* --- Module: the rack-panel frame shared by the hero I/O and every project --- */
+.module {
+  border: 1px solid var(--color-line);
+  background:
+    linear-gradient(180deg, var(--color-panel) 0%, var(--color-ink-2) 100%);
+}
+.module__bar {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.7rem 1rem;
+  border-bottom: 1px solid var(--color-line);
+  background: var(--color-panel-2);
+}
+.module__body {
+  padding: 1.15rem 1rem 1.25rem;
+}
+.jack {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  border: 1px solid currentColor;
+  flex: none;
+}
+.jack--in {
+  color: var(--color-muted);
+}
+.jack--out {
+  color: var(--color-live);
+  background: color-mix(in oklab, var(--color-live) 22%, transparent);
+}
+
 /* --- Hero cable draw --- */
 @keyframes draw {
   to {
@@ -125,8 +180,8 @@ a {
   }
 }
 
-/* --- Reveal on scroll --- */
-.reveal {
+/* --- Reveal on scroll (fails open: no JS => visible) --- */
+.js .reveal {
   opacity: 0;
   transform: translateY(14px);
   transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);

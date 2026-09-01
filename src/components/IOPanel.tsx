@@ -1,7 +1,8 @@
 /**
- * The signature motif: an IN ─→ OUT patch panel. Every project states its real
- * stack going in and one concrete result coming out. Used compact on project
- * cards; the hero renders its own larger, animated version.
+ * The signature motif in compact form: an IN / OUT patch panel at the foot of
+ * every project module. Real stack in, one concrete result out — connected by a
+ * short cable so the panel reads as a signal path, not a table. The OUT jack is
+ * lit: it is the thing that shipped.
  */
 export default function IOPanel({
   inputs,
@@ -11,17 +12,21 @@ export default function IOPanel({
   output: string;
 }) {
   return (
-    <div className="mt-6 border-t border-line pt-5">
-      <div className="grid grid-cols-[2.5rem_1fr] gap-x-3 gap-y-1">
-        <span className="port text-muted-2">IN</span>
-        <p className="port text-muted">{inputs.join("  ·  ")}</p>
-        <span aria-hidden className="relative">
-          <span className="absolute left-[3px] top-1 block h-[calc(100%+0.25rem)] w-px bg-line" />
-          <span className="absolute left-[3px] top-1 block h-3 w-px bg-signal" />
-        </span>
-        <span />
-        <span className="port text-live">OUT</span>
-        <p className="port text-paper/80">{output}</p>
+    <div className="mt-5 flex gap-4 border-y border-line py-4">
+      <div className="flex flex-col items-center pt-[0.3rem]" aria-hidden>
+        <span className="jack jack--in" />
+        <span className="my-1 w-px flex-1 bg-line" />
+        <span className="jack jack--out mb-[0.3rem]" />
+      </div>
+      <div className="min-w-0 flex-1 space-y-3">
+        <div>
+          <p className="port text-muted-2">IN</p>
+          <p className="port mt-1 text-muted">{inputs.join("  ·  ")}</p>
+        </div>
+        <div>
+          <p className="port text-live">OUT</p>
+          <p className="port mt-1 text-body">{output}</p>
+        </div>
       </div>
     </div>
   );

@@ -1,93 +1,70 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-
-type Node = { id: string; label: string; top: number };
+import { useEffect, useState } from "react";
 
 /**
- * The left rail: a 1px circuit trace with a node at each section. The trace
- * above the reading line fills with signal colour as you scroll — it doubles
- * as a progress indicator. Purely decorative for assistive tech (aria-hidden);
- * the real navigation is the anchor list it mirrors.
+ * A quiet fixed section index on the left margin (desktop only). One tick per
+ * section; the tick for the section currently in view lights up and extends.
+ * Driven by IntersectionObserver — no scroll math, no layout coupling.
  */
 export default function RailTrace({
   sections,
 }: {
   sections: { id: string; label: string }[];
 }) {
-  const [nodes, setNodes] = useState<Node[]>([]);
-  const [progress, setProgress] = useState(0);
-  const raf = useRef<number | null>(null);
+  const [active, setActive] = useState(sections[0]?.id ?? "");
 
   useEffect(() => {
-    const measure = () => {
-      const docH = document.documentElement.scrollHeight - window.innerHeight;
-      const next: Node[] = [];
-      for (const s of sections) {
-        const el = document.getElementById(s.id);
-        if (!el) continue;
-        const top = el.offsetTop;
-        next.push({ id: s.id, label: s.label, top: docH > 0 ? top / (docH + window.innerHeight) : 0 });
-      }
-      setNodes(next);
-    };
+    const els = sections
+      .map((s) => document.getElementById(s.id))
+      .filter((el): el is HTMLElement => !!el);
 
-    const onScroll = () => {
-      if (raf.current) return;
-      raf.current = requestAnimationFrame(() => {
-        raf.current = null;
-        const docH = document.documentElement.scrollHeight - window.innerHeight;
-        setProgress(docH > 0 ? Math.min(1, Math.max(0, window.scrollY / docH)) : 0);
-      });
-    };
+    const io = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((e) => e.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+        if (visible[0]) setActive(visible[0].target.id);
+      },
+      { rootMargin: "-45% 0px -45% 0px", threshold: [0, 0.5, 1] },
+    );
 
-    measure();
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", measure);
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", measure);
-      if (raf.current) cancelAnimationFrame(raf.current);
-    };
+    els.forEach((el) => io.observe(el));
+    return () => io.disconnect();
   }, [sections]);
 
   return (
-    <div
-      aria-hidden="true"
-      className="pointer-events-none fixed left-[max(1.5rem,calc(50%-25rem))] top-0 z-20 hidden h-screen w-px lg:block"
+    <nav
+      aria-label="Sections"
+      className="fixed left-[max(1.25rem,calc(50%-31rem))] top-1/2 z-30 hidden -translate-y-1/2 xl:block"
     >
-      <div className="relative h-full w-px bg-line">
-        <div
-          className="absolute left-0 top-0 w-px bg-signal transition-[height] duration-150 ease-out"
-          style={{ height: `${progress * 100}%` }}
-        />
-        {nodes.map((n) => {
-          const passed = progress + 0.001 >= n.top;
+      <ul className="flex flex-col gap-4">
+        {sections.map((s) => {
+          const on = active === s.id;
           return (
-            <div
-              key={n.id}
-              className="absolute -left-[3px] flex items-center gap-2"
-              style={{ top: `${n.top * 100}%` }}
-            >
-              <span
-                className={`block h-[7px] w-[7px] rounded-full border transition-colors duration-300 ${
-                  passed
-                    ? "border-signal bg-signal"
-                    : "border-line-soft bg-ink"
-                }`}
-              />
-              <span
-                className={`port whitespace-nowrap transition-colors duration-300 ${
-                  passed ? "text-muted" : "text-muted-2"
-                }`}
+            <li key={s.id}>
+              <a
+                href={`#${s.id}`}
+                className="group flex items-center gap-3 py-1"
+                aria-current={on ? "true" : undefined}
               >
-                {n.label}
-              </span>
-            </div>
+                <span
+                  className={`block h-px transition-all duration-300 ${
+                    on ? "w-7 bg-signal" : "w-3.5 bg-muted-3 group-hover:w-5 group-hover:bg-muted"
+                  }`}
+                />
+                <span
+                  className={`port text-[0.7rem] uppercase tracking-[0.16em] transition-colors duration-300 ${
+                    on ? "text-paper" : "text-muted-2 group-hover:text-paper"
+                  }`}
+                >
+                  {s.label}
+                </span>
+              </a>
+            </li>
           );
         })}
-      </div>
-    </div>
+      </ul>
+    </nav>
   );
 }
