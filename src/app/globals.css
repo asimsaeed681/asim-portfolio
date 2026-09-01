@@ -125,8 +125,74 @@ a {
   line-height: 0.98;
 }
 
-.prose-measure {
-  max-width: 40rem;
+.wrap {
+  max-width: 42rem;
+  margin-inline: auto;
+  padding-inline: 1.5rem;
+}
+@media (min-width: 640px) {
+  .wrap {
+    padding-inline: 2rem;
+  }
+}
+
+/* --- Zone: alternating raised surface so the page reads as chunks, not one sheet.
+   Full-bleed tint behind a section; the content still sits in the centred column. --- */
+.zone {
+  background: var(--color-ink-2);
+  border-block: 1px solid var(--color-line-soft);
+}
+.zone--raised {
+  background: linear-gradient(180deg, var(--color-panel) 0%, var(--color-ink-2) 100%);
+}
+
+/* --- Stat: the large-numeral readout for the two figures that matter (150+, 34th).
+   Framed like a panel port so it stays in the site's IN/OUT language. --- */
+.stat {
+  border: 1px solid var(--color-line);
+  background: var(--color-panel-2);
+  padding: 0.6rem 0.85rem 0.7rem;
+  min-width: 5.5rem;
+}
+.stat__value {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  font-size: 2rem;
+  color: var(--color-paper);
+}
+.stat__unit {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-live);
+  margin-top: 0.3rem;
+}
+
+/* --- Chip: one skill, scannable. Mono, bordered, keeps the toolkit in the
+   same material as the modules. --- */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  line-height: 1;
+  letter-spacing: 0.01em;
+  color: var(--color-body);
+  border: 1px solid var(--color-line);
+  background: var(--color-panel);
+  padding: 0.4rem 0.6rem;
+}
+.chip::before {
+  content: "";
+  width: 5px;
+  height: 5px;
+  border-radius: 999px;
+  background: var(--color-signal);
+  flex: none;
 }
 
 /* --- Module: the rack-panel frame shared by the hero I/O and every project --- */

@@ -122,6 +122,7 @@ export type Recognition = {
   title: string;
   org: string;
   since?: string;
+  stat?: { value: string; unit: string };
   detail: string;
 };
 
@@ -131,13 +132,15 @@ export const recognition: Recognition[] = [
     title: "Student Lead — Generative AI Sub-Circle",
     org: "ResearchCircle, COMSATS University Islamabad",
     since: "March 2026",
+    stat: { value: "150+", unit: "members" },
     detail:
-      "Direct a 150+ member generative-AI track running structured literature reviews on LLM architectures and prompt-optimization frameworks.",
+      "Run the group's structured literature reviews on LLM architectures and prompt-optimization frameworks.",
   },
   {
     tag: "R2",
-    title: "34th nationally — All Pakistan Prompt Engineering Competition",
+    title: "All Pakistan Prompt Engineering Competition",
     org: "APPEC 2026",
+    stat: { value: "34th", unit: "nationally" },
     detail:
       "A national field measuring how precisely a competitor can steer a model to a target output.",
   },
