@@ -5,6 +5,7 @@ import {
   person,
   heroIO,
   projects,
+  moreWork,
   recognition,
   skills,
   experience,
@@ -149,6 +150,17 @@ export default function Page() {
               </Reveal>
             ))}
           </div>
+          <Reveal className="mt-6 border-t border-line pt-4 text-[0.95rem] text-muted">
+            {moreWork.text}{" "}
+            <a
+              href={moreWork.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="port text-signal-soft underline-offset-4 hover:underline"
+            >
+              {moreWork.label} ↗
+            </a>
+          </Reveal>
         </section>
 
         {/* ---------- Research ---------- */}
@@ -162,7 +174,15 @@ export default function Page() {
                   <h3 className="text-[1.1rem] font-semibold leading-snug tracking-[-0.01em]">
                     {r.title}
                   </h3>
-                  <p className="port mt-1 text-muted-2">{r.org}</p>
+                  <p className="port mt-1 text-muted-2">
+                    {r.org}
+                    {r.since && (
+                      <>
+                        <span aria-hidden className="text-muted-3"> · </span>
+                        since {r.since}
+                      </>
+                    )}
+                  </p>
                   <p className="mt-2.5 text-body">{r.detail}</p>
                 </div>
               </Reveal>

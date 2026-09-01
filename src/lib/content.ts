@@ -8,7 +8,7 @@ export const person = {
   role: "BS Computer Science · COMSATS University Islamabad",
   positioning:
     "I build the systems around AI models — the orchestration, automation, and tooling that turn a prompt into shipped output.",
-  sub: "I lead a 100+ member generative-AI research track at my university, placed 34th nationally in prompt engineering, and drop to C++ when a problem needs to run close to the metal.",
+  sub: "I lead a 150+ member generative-AI research track at my university, placed 34th nationally in prompt engineering, and drop to C++ when a problem needs to run close to the metal.",
   location: "Islamabad, Pakistan",
   email: "aasim.saeed681@gmail.com",
   phone: "+92 314 2640028",
@@ -24,7 +24,7 @@ export const heroIO = {
   in: ["language models", "browser automation", "REST APIs", "C++ / STL"],
   out: [
     "content pipelines",
-    "command-line C++ tooling",
+    "a compression engine",
     "a shipped browser extension",
   ],
 };
@@ -65,22 +65,25 @@ export const projects: Project[] = [
   },
   {
     tag: "W2",
-    title: "Word Frequency Analyzer",
+    title: "Huffman File Compression Engine",
     blurb:
-      "A command-line C++ tool that reads a text file, counts how often each word appears, and surfaces the ones carrying signal — longer than three characters, appearing more than twice, common stop words removed.",
+      "A modular C++ command-line utility that losslessly compresses and decompresses files with the greedy Huffman algorithm — one binary, -c / -d flags, and real-time space-saving telemetry from the standard filesystem library.",
     io: {
-      in: ["C++17", "STL: unordered_set, map", "erase–remove idiom"],
-      out: "an alphabetically sorted frequency table, printed and written to file",
+      in: [
+        "C++17 / C++20",
+        "std::priority_queue + custom comparator",
+        "<filesystem>",
+        "bitwise packing",
+      ],
+      out: "a self-describing compressed file that restores byte-for-byte — 26% smaller on an 8 KB payload",
     },
     detail: [
-      "Stop words live in an unordered_set — O(1) lookups instead of O(log n).",
-      "Punctuation is stripped and case folded in place; length is checked before the set lookup, so short words never pay for it.",
-      "Column-aligned output through <iomanip>, mirrored to a results file.",
+      "A min-heap merges the two lowest-frequency nodes until one tree remains; a depth-first pass then assigns 0/1 codes so frequent characters get the shortest paths.",
+      "The serialized tree is written as a header, so a compressed file carries its own decoding dictionary.",
+      "Bits are packed eight at a time into real bytes; decompression walks the rebuilt tree bit by bit back to the original text.",
+      "A 128-slot ASCII frequency array gives O(1) counting on the first pass. Unified from two legacy scripts and ported to GCC 15.2 (temporary-rvalue binding fixes).",
     ],
-    link: {
-      label: "github.com/asimsaeed681/word-frequency-analyzer",
-      href: "https://github.com/asimsaeed681/word-frequency-analyzer",
-    },
+    note: "Source available on request",
   },
   {
     tag: "W3",
@@ -108,10 +111,17 @@ export const projects: Project[] = [
   },
 ];
 
+export const moreWork = {
+  text: "Also on GitHub: a C++ word-frequency analyzer with O(1) stop-word filtering, and this site.",
+  href: "https://github.com/asimsaeed681",
+  label: "github.com/asimsaeed681",
+};
+
 export type Recognition = {
   tag: string;
   title: string;
   org: string;
+  since?: string;
   detail: string;
 };
 
@@ -120,8 +130,9 @@ export const recognition: Recognition[] = [
     tag: "R1",
     title: "Student Lead — Generative AI Sub-Circle",
     org: "ResearchCircle, COMSATS University Islamabad",
+    since: "March 2026",
     detail:
-      "Direct a 100+ member generative-AI track running structured literature reviews on LLM architectures and prompt-optimization frameworks.",
+      "Direct a 150+ member generative-AI track running structured literature reviews on LLM architectures and prompt-optimization frameworks.",
   },
   {
     tag: "R2",
@@ -187,7 +198,7 @@ export const experience: Role[] = [
   {
     title: "Independent Admissions & Visa Advisor",
     org: "Self-directed",
-    period: "",
+    period: "May 2025 – present",
     detail:
       "Advise prospective international students on admissions requirements, credential evaluation, and visa-documentation compliance.",
   },
