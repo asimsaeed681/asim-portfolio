@@ -28,7 +28,7 @@ const description =
   "Asim Saeed — Computer Science student building AI-orchestration systems: content pipelines, a C++ compression engine, and a shipped Chrome extension. Leads a 100+ member generative-AI research track at COMSATS University Islamabad.";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://asim-portfolio.vercel.app"),
+  metadataBase: new URL("https://asimsaeed.me"),
   title: "Asim Saeed — AI-orchestration systems",
   description,
   keywords: [
