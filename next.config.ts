@@ -22,7 +22,8 @@ const securityHeaders = [
       "style-src 'self' 'unsafe-inline'",
       "img-src 'self' data:",
       "font-src 'self'",
-      "connect-src 'self'",
+      // the GitHub tile reads the public profile API; nothing else is allowed out
+      "connect-src 'self' https://api.github.com",
       "base-uri 'self'",
       "form-action 'self'",
       "frame-ancestors 'none'",
