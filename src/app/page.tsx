@@ -2,6 +2,7 @@ import Reveal from "@/components/Reveal";
 import RailTrace from "@/components/RailTrace";
 import IOPanel from "@/components/IOPanel";
 import DeployMark from "@/components/DeployMark";
+import ScrambleText from "@/components/ScrambleText";
 import {
   person,
   heroIO,
@@ -22,11 +23,17 @@ const railSections = [
   { id: "contact", label: "Contact" },
 ];
 
+// Timing for the CSS terminal typing (see .tty / .tty-lines in globals.css).
+const tty = (n: number, d: string, delay: string) =>
+  ({ "--n": n, "--d": d, "--delay": delay }) as React.CSSProperties;
+
 function SectionLabel({ index, title }: { index: string; title: string }) {
   return (
     <div className="mb-8 flex items-baseline gap-4 border-t border-line pt-4">
       <span className="eyebrow shrink-0">{index}</span>
-      <h2 className="display text-[1.6rem] leading-none sm:text-[1.95rem]">{title}</h2>
+      <h2 className="display text-[1.6rem] leading-none sm:text-[1.95rem]">
+        <ScrambleText text={title} />
+      </h2>
     </div>
   );
 }
@@ -43,16 +50,36 @@ export default function Page() {
         {/* ---------- Hero ---------- */}
         <section id="intro" className="pt-16 sm:pt-24">
           <div className="wrap">
-            <p className="eyebrow">AI-orchestration systems</p>
+            <p aria-hidden="true" className="port mb-3 text-live">
+              <span className="tty" style={tty(8, "0.4s", "0s")}>
+                $ whoami
+              </span>
+            </p>
+            <p className="eyebrow">
+              <span className="tty" style={tty(24, "0.3s", "0.35s")}>
+                AI-orchestration systems
+              </span>
+            </p>
             <h1 className="display mt-4 text-[clamp(2.7rem,10vw,4.25rem)]">
-              {person.name}
+              <span className="tty" style={tty(10, "0.45s", "0.6s")}>
+                {person.name}
+              </span>
             </h1>
-            <p className="port mt-3 text-muted">{person.role}</p>
+            <p className="port mt-3 text-muted">
+              <span className="tty" style={tty(50, "0.35s", "1s")}>
+                {person.role}
+              </span>
+            </p>
 
-            <p className="mt-7 max-w-[33rem] text-[1.22rem] leading-[1.5] text-paper">
+            <p
+              className="tty-lines mt-7 max-w-[33rem] text-[1.22rem] leading-[1.5] text-paper"
+              style={tty(3, "0.4s", "1.3s")}
+            >
               {person.positioning}
             </p>
-            <p className="mt-4 max-w-[33rem] text-body">{person.sub}</p>
+            <p className="tty-lines mt-4 max-w-[33rem] text-body" style={tty(3, "0.4s", "1.6s")}>
+              {person.sub}
+            </p>
 
             {/* personal I/O — the thesis object */}
             <div className="module mt-10 max-w-lg">

@@ -271,3 +271,47 @@ a {
     transition: none;
   }
 }
+
+/* --- Terminal boot: the hero prints in. Pure CSS, so it needs no JS and the real
+   text is always in the DOM (clip-path reveals it; nothing is removed or moved). --- */
+@keyframes tty-type {
+  from { clip-path: inset(0 100% 0 0); }
+  to { clip-path: inset(0 0 0 0); }
+}
+@keyframes tty-print {
+  from { clip-path: inset(0 0 100% 0); }
+  to { clip-path: inset(0 0 0 0); }
+}
+@keyframes tty-caret {
+  from { left: 0; opacity: 1; }
+  99% { opacity: 1; }
+  to { left: 100%; opacity: 0; }
+}
+.tty {
+  position: relative;
+  display: inline-block;
+  animation: tty-type var(--d, 0.5s) steps(var(--n, 10), end) var(--delay, 0s) both;
+}
+.tty::after {
+  content: "";
+  position: absolute;
+  top: 10%;
+  bottom: 8%;
+  width: 0.09em;
+  min-width: 2px;
+  background: var(--color-live);
+  animation: tty-caret var(--d, 0.5s) steps(var(--n, 10), end) var(--delay, 0s) both;
+}
+.tty-lines {
+  animation: tty-print var(--d, 0.4s) steps(var(--n, 3), end) var(--delay, 0s) both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .tty,
+  .tty::after,
+  .tty-lines {
+    animation: none;
+  }
+  .tty::after {
+    display: none;
+  }
+}
