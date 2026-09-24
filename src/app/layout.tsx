@@ -1,24 +1,17 @@
 import type { Metadata } from "next";
-import { Bricolage_Grotesque, Hanken_Grotesk, JetBrains_Mono } from "next/font/google";
+import { Saira_Condensed, Roboto_Mono } from "next/font/google";
 import "./globals.css";
 import { person } from "@/lib/content";
 
-const bricolage = Bricolage_Grotesque({
-  variable: "--font-bricolage",
+const drafting = Saira_Condensed({
+  variable: "--font-drafting",
   subsets: ["latin"],
-  weight: ["600", "700"],
+  weight: ["400", "500", "600", "700"],
   display: "swap",
 });
 
-const hanken = Hanken_Grotesk({
-  variable: "--font-hanken",
-  subsets: ["latin"],
-  weight: ["400", "500", "600"],
-  display: "swap",
-});
-
-const jetbrains = JetBrains_Mono({
-  variable: "--font-jetbrains",
+const note = Roboto_Mono({
+  variable: "--font-note",
   subsets: ["latin"],
   weight: ["400", "500"],
   display: "swap",
@@ -75,7 +68,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${bricolage.variable} ${hanken.variable} ${jetbrains.variable} antialiased`}
+      className={`${drafting.variable} ${note.variable} antialiased`}
     >
       <body>
         <script

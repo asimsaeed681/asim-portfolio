@@ -1,273 +1,327 @@
 @import "tailwindcss";
 
 /*
-  Asim Saeed — portfolio
-  A dark "signal-chain" panel: saturated ultramarine cable against near-black,
-  warm silkscreen text, mono utility type. The recurring motif is the I/O port
-  (IN ─→ OUT), which echoes how the work itself is built: inputs, a transform,
-  a concrete output.
+  concept/blueprint — the portfolio as one technical drawing.
+  Prussian ground, white line-work, ochre reserved for callouts and the active
+  node. Saira Condensed letters the drawing; Roboto Mono carries dimensions and
+  annotations. Everything is a sheet on a pannable board.
 */
 
 @theme {
-  /* Surface ladder — each step is a visible tonal jump, not just a token rename.
-     base #0e0f14 -> zone #161822 -> zone-2 #1d202a -> panel #282b37 -> panel-2 #2e313d */
-  --color-ink: #0e0f14; /* page base: hero, toolkit */
-  --color-ink-2: #131520; /* gradient tails only */
-  --color-zone: #161822; /* Work, Contact zones (+~10/ch over base) */
-  --color-zone-2: #1d202a; /* Research, Path zones (+~9/ch over --zone) */
-  --color-panel: #282b37; /* module cards, chips (+~11/ch over --zone-2) */
-  --color-panel-2: #2e313d; /* module bars, stat cells */
-  --color-line: #3d4150;
-  --color-line-soft: #2a2d38;
-  --color-paper: #edece7;
-  --color-body: #c8c9d2; /* ~9:1 on the panels */
-  --color-muted: #a3a5b3; /* ~5:1 — secondary text, labels */
-  --color-muted-2: #9a9cab; /* ~4.5:1 on --panel-2 — small labels, still AA */
-  --color-muted-3: #6f7180; /* NON-TEXT only (separators, rules) */
-  --color-signal: #3b5bff;
-  --color-signal-soft: #7288ff;
-  --color-live: #5fe3c7;
+  --color-prussian: #0c3557;
+  --color-prussian-2: #0a2c49;
+  --color-prussian-3: #09263f;
+  --color-line: #a9c8e2;
+  --color-line-soft: #5a87ad;
+  --color-chalk: #eaf3fb;
+  --color-ochre: #e3a72f;
 
-  --font-display: var(--font-bricolage), ui-sans-serif, system-ui, sans-serif;
-  --font-body: var(--font-hanken), ui-sans-serif, system-ui, sans-serif;
-  --font-mono: var(--font-jetbrains), ui-monospace, SFMono-Regular, monospace;
+  --font-draft-stack: var(--font-drafting), "Arial Narrow", sans-serif;
+  --font-note-stack: var(--font-note), ui-monospace, monospace;
 }
 
 :root {
   color-scheme: dark;
+  --grid-minor: 12px;
+  --grid-major: 60px;
 }
 
 * {
-  border-color: var(--color-line);
+  border-color: var(--color-line-soft);
 }
 
 html {
   -webkit-text-size-adjust: 100%;
-  scroll-behavior: smooth;
 }
 
 body {
-  background-color: var(--color-ink);
-  color: var(--color-paper);
-  font-family: var(--font-body);
-  font-size: 1rem;
-  line-height: 1.62;
+  background-color: var(--color-prussian);
+  color: var(--color-chalk);
+  font-family: var(--font-note-stack);
+  font-size: 0.875rem;
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
+  /* graph paper: fine grid, heavier every fifth line */
+  background-image:
+    linear-gradient(rgb(169 200 226 / 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(169 200 226 / 0.07) 1px, transparent 1px),
+    linear-gradient(rgb(169 200 226 / 0.13) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(169 200 226 / 0.13) 1px, transparent 1px);
+  background-size:
+    var(--grid-minor) var(--grid-minor),
+    var(--grid-minor) var(--grid-minor),
+    var(--grid-major) var(--grid-major),
+    var(--grid-major) var(--grid-major);
 }
 
 ::selection {
-  background: color-mix(in oklab, var(--color-signal) 45%, transparent);
-  color: #fff;
+  background: var(--color-ochre);
+  color: var(--color-prussian);
 }
 
-/* Focus — visible, on-brand, never removed */
 :focus-visible {
-  outline: 2px solid var(--color-signal-soft);
+  outline: 2px solid var(--color-ochre);
   outline-offset: 3px;
-  border-radius: 2px;
 }
 
 a {
-  color: inherit;
-  text-decoration: none;
+  color: var(--color-ochre);
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
-/* Skip link — visually hidden until focused */
 .skip-link {
   position: fixed;
-  top: 0.75rem;
-  left: 0.75rem;
-  z-index: 60;
-  transform: translateY(-150%);
-  transition: transform 0.15s ease;
-  background: var(--color-panel-2);
-  border: 1px solid var(--color-signal);
-  color: var(--color-paper);
+  top: 8px;
+  left: 8px;
+  z-index: 120;
+  transform: translateY(-200%);
+  background: var(--color-prussian-3);
+  border: 1px solid var(--color-ochre);
+  color: var(--color-chalk);
   padding: 0.5rem 0.9rem;
-  font-family: var(--font-mono);
-  font-size: 0.8rem;
 }
 .skip-link:focus {
-  transform: translateY(0);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.001ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.001ms !important;
-  }
-}
-
-/* --- Utility type roles --- */
-.eyebrow {
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
-  font-weight: 500;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--color-muted);
-}
-
-.port {
-  font-family: var(--font-mono);
-  font-size: 0.78rem;
-  line-height: 1.5;
-  letter-spacing: 0.01em;
-}
-
-.display {
-  font-family: var(--font-display);
-  font-weight: 700;
-  letter-spacing: -0.03em;
-  line-height: 0.98;
-}
-
-.wrap {
-  max-width: 42rem;
-  margin-inline: auto;
-  padding-inline: 1.5rem;
-}
-@media (min-width: 640px) {
-  .wrap {
-    padding-inline: 2rem;
-  }
-}
-
-/* --- Zone: full-bleed tint behind a section so the page reads as chunks, not one
-   sheet. Two tiers, each a clearly perceptible step over the page base
-   (--zone ~+10/channel, --zone-2 ~+19/channel). Content stays in the centred
-   column. A hairline top edge sharpens the boundary further. --- */
-.zone {
-  background: var(--color-zone);
-  border-top: 1px solid var(--color-line-soft);
-}
-.zone--raised {
-  background: var(--color-zone-2);
-  border-top: 1px solid var(--color-line-soft);
-}
-
-/* --- Stat: the large-numeral readout for the two figures that matter (150+, 34th).
-   Framed like a panel port so it stays in the site's IN/OUT language. --- */
-.stat {
-  border: 1px solid var(--color-line);
-  background: var(--color-panel-2);
-  padding: 0.6rem 0.85rem 0.7rem;
-  min-width: 5.5rem;
-}
-.stat__value {
-  font-family: var(--font-display);
-  font-weight: 700;
-  letter-spacing: -0.03em;
-  line-height: 1;
-  font-size: 2rem;
-  color: var(--color-paper);
-}
-.stat__unit {
-  font-family: var(--font-mono);
-  font-size: 0.62rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--color-live);
-  margin-top: 0.3rem;
-}
-
-/* --- Chip: one skill, scannable. Mono, bordered, keeps the toolkit in the
-   same material as the modules. --- */
-.chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  font-family: var(--font-mono);
-  font-size: 0.74rem;
-  line-height: 1;
-  letter-spacing: 0.01em;
-  color: var(--color-body);
-  border: 1px solid var(--color-line);
-  background: var(--color-panel);
-  padding: 0.4rem 0.6rem;
-}
-.chip::before {
-  content: "";
-  width: 5px;
-  height: 5px;
-  border-radius: 999px;
-  background: var(--color-signal);
-  flex: none;
-}
-
-/* --- Module: the rack-panel frame shared by the hero I/O and every project --- */
-.module {
-  border: 1px solid var(--color-line);
-  /* sits above every zone tier, so cards read as raised in any section */
-  background:
-    linear-gradient(180deg, var(--color-panel-2) 0%, var(--color-panel) 100%);
-}
-.module__bar {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 0.7rem 1rem;
-  border-bottom: 1px solid var(--color-line);
-  background: var(--color-panel-2);
-}
-.module__body {
-  padding: 1.15rem 1rem 1.25rem;
-}
-.jack {
-  display: inline-block;
-  width: 8px;
-  height: 8px;
-  border-radius: 999px;
-  border: 1px solid currentColor;
-  flex: none;
-}
-.jack--in {
-  color: var(--color-muted);
-}
-.jack--out {
-  color: var(--color-live);
-  background: color-mix(in oklab, var(--color-live) 22%, transparent);
-}
-
-/* --- Hero cable draw --- */
-@keyframes draw {
-  to {
-    stroke-dashoffset: 0;
-  }
-}
-.cable-path {
-  stroke-dasharray: 1;
-  stroke-dashoffset: 1;
-  animation: draw 1s cubic-bezier(0.65, 0, 0.35, 1) 0.25s forwards;
-}
-@media (prefers-reduced-motion: reduce) {
-  .cable-path {
-    stroke-dashoffset: 0;
-    animation: none;
-  }
-}
-
-/* --- Reveal on scroll (fails open: no JS => visible) --- */
-.js .reveal {
-  opacity: 0;
-  transform: translateY(14px);
-  transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
-}
-.reveal.is-in {
-  opacity: 1;
   transform: none;
 }
-@media (prefers-reduced-motion: reduce) {
-  .reveal {
-    opacity: 1;
-    transform: none;
-    transition: none;
+
+.draft {
+  font-family: var(--font-draft-stack);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  line-height: 1.1;
+}
+
+/* ---------- sheets (also the no-JS document) ---------- */
+.board {
+  max-width: 54rem;
+  margin-inline: auto;
+  padding: 1.5rem 1.25rem 4rem;
+}
+.sheet {
+  border: 1px solid var(--color-line-soft);
+  background: rgb(10 44 73 / 0.82);
+  margin-bottom: 1.25rem;
+}
+.sheet__head {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  border-bottom: 1px solid var(--color-line-soft);
+  padding: 0.5rem 0.85rem;
+}
+.sheet__id {
+  font-family: var(--font-note-stack);
+  font-size: 0.68rem;
+  color: var(--color-ochre);
+}
+.sheet__title {
+  font-family: var(--font-draft-stack);
+  font-size: 1.05rem;
+  color: var(--color-chalk);
+}
+.sheet__body {
+  padding: 0.95rem 0.9rem 1.1rem;
+}
+
+/* dimension-line rule between blocks */
+.dim-rule {
+  position: relative;
+  height: 1px;
+  background: var(--color-line-soft);
+  margin: 1.1rem 0;
+}
+.dim-rule::before,
+.dim-rule::after {
+  content: "";
+  position: absolute;
+  top: -3px;
+  width: 1px;
+  height: 7px;
+  background: var(--color-line-soft);
+}
+.dim-rule::before {
+  left: 0;
+}
+.dim-rule::after {
+  right: 0;
+}
+
+.callout {
+  border-left: 2px solid var(--color-ochre);
+  padding-left: 0.7rem;
+  color: var(--color-line);
+  font-size: 0.82rem;
+}
+.spec {
+  display: grid;
+  grid-template-columns: 5.2rem 1fr;
+  gap: 0.25rem 0.75rem;
+  font-size: 0.8rem;
+}
+.spec dt {
+  font-family: var(--font-draft-stack);
+  color: var(--color-line-soft);
+}
+.tick {
+  color: var(--color-ochre);
+}
+
+/* ---------- JS: the drawing board ---------- */
+.stage,
+.titleblock,
+.zoomctl {
+  display: none;
+}
+
+@media (min-width: 860px) {
+  .js body {
+    height: 100dvh;
+    overflow: hidden;
+  }
+  .js .board {
+    display: none;
+  }
+  .js .stage {
+    display: block;
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    cursor: grab;
+    touch-action: none;
+  }
+  .js .stage.is-panning {
+    cursor: grabbing;
+  }
+  .js .canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 2400px;
+    height: 1500px;
+    transform-origin: 0 0;
+    will-change: transform;
+  }
+  .js .canvas--anim {
+    transition: transform 520ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .js .canvas--anim {
+      transition: none;
+    }
+  }
+  .js .node {
+    position: absolute;
+    border: 1px solid var(--color-line-soft);
+    background: rgb(9 38 63 / 0.94);
+    text-align: left;
+    padding: 0.55rem 0.7rem 0.65rem;
+    color: var(--color-chalk);
+  }
+  .js .node:hover,
+  .js .node.is-active {
+    border-color: var(--color-ochre);
+    box-shadow: 0 0 0 1px var(--color-ochre);
+  }
+  .js .node__id {
+    font-size: 0.62rem;
+    color: var(--color-ochre);
+  }
+  .js .node__title {
+    font-family: var(--font-draft-stack);
+    font-size: 0.9rem;
+    line-height: 1.15;
+    margin-top: 2px;
+  }
+  .js .node__sub {
+    font-size: 0.66rem;
+    color: var(--color-line-soft);
+    margin-top: 3px;
+  }
+  .js .node--hub {
+    border-color: var(--color-chalk);
+    padding: 0.9rem 1rem 1rem;
+  }
+  .js .node--hub .node__title {
+    font-size: 1.5rem;
+  }
+
+  .js .detail {
+    position: absolute;
+    width: 396px;
+    max-height: 560px;
+    overflow: auto;
+    border: 1px solid var(--color-ochre);
+    background: rgb(9 38 63 / 0.97);
+    padding: 0.9rem 0.95rem 1rem;
+  }
+
+  .js .titleblock {
+    display: block;
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    z-index: 60;
+    width: 320px;
+    border-top: 1px solid var(--color-line);
+    border-left: 1px solid var(--color-line);
+    background: var(--color-prussian-3);
+  }
+  .js .titleblock table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.68rem;
+  }
+  .js .titleblock td {
+    border: 1px solid var(--color-line-soft);
+    padding: 0.3rem 0.45rem;
+    vertical-align: top;
+  }
+  .js .titleblock .lbl {
+    font-family: var(--font-draft-stack);
+    color: var(--color-line-soft);
+    width: 4.6rem;
+  }
+  .js .tb-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+    padding: 0.45rem;
+    border-top: 1px solid var(--color-line-soft);
+  }
+  .js .tb-nav button {
+    font-family: var(--font-draft-stack);
+    font-size: 0.66rem;
+    padding: 0.22rem 0.45rem;
+    border: 1px solid var(--color-line-soft);
+    color: var(--color-line);
+  }
+  .js .tb-nav button[aria-current="true"],
+  .js .tb-nav button:hover {
+    border-color: var(--color-ochre);
+    color: var(--color-ochre);
+  }
+
+  .js .zoomctl {
+    display: flex;
+    position: fixed;
+    left: 12px;
+    bottom: 12px;
+    z-index: 60;
+    gap: 0.25rem;
+  }
+  .js .zoomctl button {
+    width: 30px;
+    height: 30px;
+    border: 1px solid var(--color-line-soft);
+    background: var(--color-prussian-3);
+    color: var(--color-chalk);
+    font-family: var(--font-draft-stack);
+  }
+  .js .zoomctl button:hover {
+    border-color: var(--color-ochre);
+    color: var(--color-ochre);
   }
 }
+
+/* Phone: the board is a stack of sheets, which is what the fallback already is. */
