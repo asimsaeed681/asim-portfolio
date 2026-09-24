@@ -1,26 +1,19 @@
 import type { Metadata } from "next";
-import { Bricolage_Grotesque, Hanken_Grotesk, JetBrains_Mono } from "next/font/google";
+import { Anton, Manrope } from "next/font/google";
 import "./globals.css";
 import { person } from "@/lib/content";
 
-const bricolage = Bricolage_Grotesque({
-  variable: "--font-bricolage",
+const title = Anton({
+  variable: "--font-title",
   subsets: ["latin"],
-  weight: ["600", "700"],
+  weight: ["400"],
   display: "swap",
 });
 
-const hanken = Hanken_Grotesk({
-  variable: "--font-hanken",
+const body = Manrope({
+  variable: "--font-body",
   subsets: ["latin"],
-  weight: ["400", "500", "600"],
-  display: "swap",
-});
-
-const jetbrains = JetBrains_Mono({
-  variable: "--font-jetbrains",
-  subsets: ["latin"],
-  weight: ["400", "500"],
+  weight: ["400", "500", "700"],
   display: "swap",
 });
 
@@ -75,7 +68,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${bricolage.variable} ${hanken.variable} ${jetbrains.variable} antialiased`}
+      className={`${title.variable} ${body.variable} antialiased`}
     >
       <body>
         <script
