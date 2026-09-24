@@ -35,6 +35,10 @@
 
 :root {
   color-scheme: dark;
+  /* very faint dot grid: 5% white on the darkest surface, invisible on a glance */
+  --dots: radial-gradient(circle at 1px 1px, rgb(255 255 255 / 0.05) 1px, transparent 1.4px);
+  /* soft ramp at the top edge of a zone, so tone changes read as a gradient */
+  --ramp: linear-gradient(to bottom, rgb(0 0 0 / 0.26), transparent 110px);
 }
 
 * {
@@ -48,6 +52,8 @@ html {
 
 body {
   background-color: var(--color-ink);
+  background-image: var(--dots);
+  background-size: 24px 24px;
   color: var(--color-paper);
   font-family: var(--font-body);
   font-size: 1rem;
@@ -144,13 +150,18 @@ a {
    sheet. Two tiers, each a clearly perceptible step over the page base
    (--zone ~+10/channel, --zone-2 ~+19/channel). Content stays in the centred
    column. A hairline top edge sharpens the boundary further. --- */
+.zone,
+.zone--raised {
+  background-repeat: no-repeat, repeat;
+  background-size: 100% 110px, 24px 24px;
+  background-image: var(--ramp), var(--dots);
+  border-top: 1px solid rgb(255 255 255 / 0.04);
+}
 .zone {
-  background: var(--color-zone);
-  border-top: 1px solid var(--color-line-soft);
+  background-color: var(--color-zone);
 }
 .zone--raised {
-  background: var(--color-zone-2);
-  border-top: 1px solid var(--color-line-soft);
+  background-color: var(--color-zone-2);
 }
 
 /* --- Stat: the large-numeral readout for the two figures that matter (150+, 34th).
@@ -204,6 +215,8 @@ a {
 
 /* --- Module: the rack-panel frame shared by the hero I/O and every project --- */
 .module {
+  position: relative;
+  isolation: isolate;
   border: 1px solid var(--color-line);
   /* sits above every zone tier, so cards read as raised in any section */
   background:
@@ -269,5 +282,27 @@ a {
     opacity: 1;
     transform: none;
     transition: none;
+  }
+}
+
+/* --- Card spotlight: soft signal-blue pool that follows the pointer. Only where a
+   real pointer exists and motion is welcome. --- */
+.module::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(
+    260px circle at var(--mx, 50%) var(--my, 50%),
+    rgb(59 91 255 / 0.13),
+    transparent 70%
+  );
+  transition: opacity 0.25s ease;
+}
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .module:hover::before {
+    opacity: 1;
   }
 }

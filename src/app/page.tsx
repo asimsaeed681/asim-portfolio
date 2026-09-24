@@ -2,6 +2,7 @@ import Reveal from "@/components/Reveal";
 import RailTrace from "@/components/RailTrace";
 import IOPanel from "@/components/IOPanel";
 import DeployMark from "@/components/DeployMark";
+import Spotlight from "@/components/Spotlight";
 import {
   person,
   heroIO,
@@ -38,6 +39,7 @@ export default function Page() {
         Skip to content
       </a>
       <RailTrace sections={railSections} />
+      <Spotlight />
 
       <main className="pb-24">
         {/* ---------- Hero ---------- */}
