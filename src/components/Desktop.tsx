@@ -159,15 +159,20 @@ export default function Desktop({ panes }: { panes: Record<AppId, ReactNode> }) 
             className={`win ${focus === a.id ? "win--focus" : ""} ${
               isVisible(a.id) ? "" : "is-closed"
             }`}
+            /* Desktop places windows by inline style. On a phone they are
+               full-screen sheets, and an inline left/width would beat the
+               stylesheet, so drop the geometry entirely there. */
             style={
-              {
-                left: p.x,
-                top: p.y,
-                width: PLACE[a.id].w,
-                // consumed only by the desktop rules, so the linear fallback is unclipped
-                "--wh": `${PLACE[a.id].h}px`,
-                zIndex: focus === a.id ? 30 : 20,
-              } as React.CSSProperties
+              phone
+                ? undefined
+                : ({
+                    left: p.x,
+                    top: p.y,
+                    width: PLACE[a.id].w,
+                    // read only by the desktop rules; the linear fallback stays unclipped
+                    "--wh": `${PLACE[a.id].h}px`,
+                    zIndex: focus === a.id ? 30 : 20,
+                  } as React.CSSProperties)
             }
             onPointerDown={() => setFocus(a.id)}
           >
