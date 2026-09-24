@@ -271,3 +271,18 @@ a {
     transition: none;
   }
 }
+
+/* --- Media slot: reserved, labelled space for real project media. Same aspect
+   ratio as the final asset, so swapping it in shifts nothing. --- */
+.media-slot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  padding: 0.75rem;
+  text-align: center;
+  border: 1px dashed var(--color-line);
+  background: var(--color-zone);
+  overflow: hidden;
+}

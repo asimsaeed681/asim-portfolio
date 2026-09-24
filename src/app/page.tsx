@@ -2,6 +2,7 @@ import Reveal from "@/components/Reveal";
 import RailTrace from "@/components/RailTrace";
 import IOPanel from "@/components/IOPanel";
 import DeployMark from "@/components/DeployMark";
+import ProjectMedia from "@/components/ProjectMedia";
 import {
   person,
   heroIO,
@@ -127,6 +128,8 @@ export default function Page() {
                     <p className="text-body">{p.blurb}</p>
 
                     <IOPanel inputs={p.io.in} output={p.io.out} />
+
+                    {p.media && <ProjectMedia slots={p.media} />}
 
                     <ul className="mt-4 space-y-2 text-[0.95rem] text-muted">
                       {p.detail.map((d) => (

@@ -29,6 +29,21 @@ export const heroIO = {
   ],
 };
 
+// A reserved media slot inside a project card. Until `ready` is true it renders
+// a labelled placeholder with the same aspect ratio, so dropping the real file
+// in causes no layout shift. Nothing here is invented media.
+export type MediaSlot = {
+  id: string;
+  kind: "video" | "image";
+  aspect: string; // CSS aspect-ratio, e.g. "9 / 16"
+  file: string; // where the file goes (relative to the repo root)
+  spec: string; // what to provide
+  ready?: boolean; // flip to true once the file exists
+  alt?: string;
+  poster?: string; // video only: public path of the poster frame
+  sources?: { src: string; type: string }[]; // video only
+};
+
 export type Project = {
   tag: string;
   title: string;
@@ -37,6 +52,7 @@ export type Project = {
   detail: string[];
   link?: { label: string; href: string };
   note?: string;
+  media?: MediaSlot[];
 };
 
 export const projects: Project[] = [
@@ -62,6 +78,21 @@ export const projects: Project[] = [
       "A deterministic local text-to-speech fallback keeps a run from ever blocking on an API quota.",
     ],
     note: "Private — walkthrough on request",
+    media: [
+      {
+        id: "w1-pipeline-loop",
+        kind: "video",
+        aspect: "9 / 16",
+        file: "public/media/w1-pipeline-loop.mp4",
+        spec: "One real render from the pipeline. 9:16, 720x1280, 6 to 8 s seamless loop, no audio track, under 1.5 MB. Also provide the same clip as public/media/w1-pipeline-loop.webm and a first-frame public/media/w1-pipeline-poster.jpg.",
+        alt: "Looping capture of a video rendered by the content pipeline",
+        poster: "/media/w1-pipeline-poster.jpg",
+        sources: [
+          { src: "/media/w1-pipeline-loop.webm", type: "video/webm" },
+          { src: "/media/w1-pipeline-loop.mp4", type: "video/mp4" },
+        ],
+      },
+    ],
   },
   {
     tag: "W2",
@@ -108,6 +139,32 @@ export const projects: Project[] = [
       label: "github.com/asimsaeed681/youtube-feed-blocker",
       href: "https://github.com/asimsaeed681/youtube-feed-blocker",
     },
+    media: [
+      {
+        id: "w3-shorts-before",
+        kind: "image",
+        aspect: "16 / 10",
+        file: "public/media/w3-shorts-before.webp",
+        spec: "Search results with the Shorts shelf visible, extension off. 640x400.",
+        alt: "YouTube search results with the Shorts shelf visible",
+      },
+      {
+        id: "w3-shorts-after",
+        kind: "image",
+        aspect: "16 / 10",
+        file: "public/media/w3-shorts-after.webp",
+        spec: "Same search results with the extension on, Shorts shelf gone. 640x400.",
+        alt: "The same results with the Shorts shelf removed",
+      },
+      {
+        id: "w3-home-widgets",
+        kind: "image",
+        aspect: "16 / 10",
+        file: "public/media/w3-home-widgets.webp",
+        spec: "Home feed replaced by the focus widgets mode. 640x400.",
+        alt: "YouTube home feed replaced by the focus widgets",
+      },
+    ],
   },
 ];
 
