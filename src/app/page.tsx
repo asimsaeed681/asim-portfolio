@@ -2,6 +2,8 @@ import Reveal from "@/components/Reveal";
 import RailTrace from "@/components/RailTrace";
 import IOPanel from "@/components/IOPanel";
 import DeployMark from "@/components/DeployMark";
+import SmoothScroll from "@/components/SmoothScroll";
+import CountUp from "@/components/CountUp";
 import {
   person,
   heroIO,
@@ -24,10 +26,10 @@ const railSections = [
 
 function SectionLabel({ index, title }: { index: string; title: string }) {
   return (
-    <div className="mb-8 flex items-baseline gap-4 border-t border-line pt-4">
+    <Reveal className="mb-8 flex items-baseline gap-4 border-t border-line pt-4">
       <span className="eyebrow shrink-0">{index}</span>
       <h2 className="display text-[1.6rem] leading-none sm:text-[1.95rem]">{title}</h2>
-    </div>
+    </Reveal>
   );
 }
 
@@ -37,6 +39,7 @@ export default function Page() {
       <a href="#intro" className="skip-link">
         Skip to content
       </a>
+      <SmoothScroll />
       <RailTrace sections={railSections} />
 
       <main className="pb-24">
@@ -115,8 +118,8 @@ export default function Page() {
           <div className="wrap">
             <SectionLabel index="01 / work" title="Selected work" />
             <div className="space-y-6">
-              {projects.map((p) => (
-                <Reveal as="article" key={p.tag} className="module">
+              {projects.map((p, i) => (
+                <Reveal as="article" key={p.tag} delay={i * 90} className="module">
                   <div className="module__bar">
                     <span className="port text-muted-2">{p.tag}</span>
                     <h3 className="text-[1.05rem] font-semibold leading-tight tracking-[-0.01em]">
@@ -182,7 +185,9 @@ export default function Page() {
                 >
                   {r.stat ? (
                     <div className="stat self-start">
-                      <div className="stat__value">{r.stat.value}</div>
+                      <div className="stat__value">
+                        <CountUp value={r.stat.value} />
+                      </div>
                       <div className="stat__unit">{r.stat.unit}</div>
                     </div>
                   ) : (
@@ -251,8 +256,12 @@ export default function Page() {
             <SectionLabel index="04 / path" title="Experience & education" />
 
             <div className="space-y-8">
-              {experience.map((role) => (
-                <Reveal key={role.title} className="grid gap-1 sm:grid-cols-[9rem_1fr] sm:gap-6">
+              {experience.map((role, i) => (
+                <Reveal
+                  key={role.title}
+                  delay={i * 70}
+                  className="grid gap-1 sm:grid-cols-[9rem_1fr] sm:gap-6"
+                >
                   <p className="port pt-1 text-muted-2">{role.period || "—"}</p>
                   <div>
                     <h3 className="font-semibold tracking-[-0.01em]">
@@ -266,8 +275,12 @@ export default function Page() {
             </div>
 
             <div className="mt-12 space-y-5 border-t border-line pt-8">
-              {education.map((e) => (
-                <Reveal key={e.title} className="grid gap-1 sm:grid-cols-[9rem_1fr] sm:gap-6">
+              {education.map((e, i) => (
+                <Reveal
+                  key={e.title}
+                  delay={i * 70}
+                  className="grid gap-1 sm:grid-cols-[9rem_1fr] sm:gap-6"
+                >
                   <p className="port pt-1 text-muted-2">{e.period}</p>
                   <div className="flex flex-wrap items-baseline justify-between gap-x-4">
                     <h3 className="font-semibold tracking-[-0.01em]">

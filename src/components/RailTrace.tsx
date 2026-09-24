@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 /**
  * A quiet fixed section index on the left margin (desktop only). One tick per
@@ -13,6 +13,17 @@ export default function RailTrace({
   sections: { id: string; label: string }[];
 }) {
   const [active, setActive] = useState(sections[0]?.id ?? "");
+  const listRef = useRef<HTMLUListElement>(null);
+  const barRef = useRef<HTMLSpanElement>(null);
+
+  // Slide the indicator to the active item (imperative: no state, no re-render).
+  useEffect(() => {
+    const li = listRef.current?.querySelector<HTMLElement>(`[data-id="${active}"]`);
+    const bar = barRef.current;
+    if (!li || !bar) return;
+    bar.style.height = `${li.offsetHeight}px`;
+    bar.style.transform = `translateY(${li.offsetTop}px)`;
+  }, [active]);
 
   useEffect(() => {
     const els = sections
@@ -38,11 +49,16 @@ export default function RailTrace({
       aria-label="Sections"
       className="fixed left-[max(1.25rem,calc(50%-31rem))] top-1/2 z-30 hidden -translate-y-1/2 xl:block"
     >
-      <ul className="flex flex-col gap-4">
+      <span
+        ref={barRef}
+        aria-hidden="true"
+        className="absolute left-0 top-0 w-[2px] bg-signal transition-[transform,height] duration-[380ms] ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none"
+      />
+      <ul ref={listRef} className="flex flex-col gap-4 pl-4">
         {sections.map((s) => {
           const on = active === s.id;
           return (
-            <li key={s.id}>
+            <li key={s.id} data-id={s.id}>
               <a
                 href={`#${s.id}`}
                 className="group flex items-center gap-3 py-1"
