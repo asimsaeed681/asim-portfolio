@@ -129,7 +129,7 @@ a:hover {
 .scene__title {
   font-family: var(--font-title-stack);
   text-transform: uppercase;
-  font-size: clamp(2.6rem, 11vw, 8rem);
+  font-size: clamp(3.4rem, 17vw, 8rem);
   line-height: 0.85;
   letter-spacing: -0.005em;
   margin-top: 0.5rem;
