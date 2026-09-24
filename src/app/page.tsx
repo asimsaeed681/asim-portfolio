@@ -1,343 +1,299 @@
-import Reveal from "@/components/Reveal";
-import RailTrace from "@/components/RailTrace";
-import IOPanel from "@/components/IOPanel";
-import DeployMark from "@/components/DeployMark";
+import Runner from "@/components/Runner";
 import {
   person,
-  heroIO,
   projects,
-  moreWork,
   recognition,
   skills,
   experience,
   education,
+  moreWork,
 } from "@/lib/content";
 
-const railSections = [
-  { id: "intro", label: "Intro" },
-  { id: "work", label: "Work" },
-  { id: "research", label: "Research" },
-  { id: "skills", label: "Toolkit" },
-  { id: "path", label: "Path" },
-  { id: "contact", label: "Contact" },
+const SECTIONS = [
+  { id: "cover", label: "Cover", page: "1" },
+  { id: "contents", label: "Contents", page: "3" },
+  ...projects.map((p, i) => ({
+    id: `feature-${p.tag.toLowerCase()}`,
+    label: `Feature ${i + 1}`,
+    page: String(8 + i * 6),
+  })),
+  { id: "research", label: "Research", page: "28" },
+  { id: "path", label: "Curriculum", page: "34" },
+  { id: "contact", label: "Masthead", page: "40" },
 ];
 
-function SectionLabel({ index, title }: { index: string; title: string }) {
-  return (
-    <div className="mb-8 flex items-baseline gap-4 border-t border-line pt-4">
-      <span className="eyebrow shrink-0">{index}</span>
-      <h2 className="display text-[1.6rem] leading-none sm:text-[1.95rem]">{title}</h2>
-    </div>
-  );
-}
+const PAGE_OF = Object.fromEntries(SECTIONS.map((s) => [s.id, s.page]));
 
 export default function Page() {
   return (
     <>
-      <a href="#intro" className="skip-link">
-        Skip to content
+      <a href="#contents" className="skip-link">
+        Skip to contents
       </a>
-      <RailTrace sections={railSections} />
+      <Runner sections={SECTIONS} />
 
-      <main className="pb-24">
-        {/* ---------- Hero ---------- */}
-        <section id="intro" className="pt-16 sm:pt-24">
-          <div className="wrap">
-            <p className="eyebrow">AI-orchestration systems</p>
-            <h1 className="display mt-4 text-[clamp(2.7rem,10vw,4.25rem)]">
-              {person.name}
-            </h1>
-            <p className="port mt-3 text-muted">{person.role}</p>
-
-            <p className="mt-7 max-w-[33rem] text-[1.22rem] leading-[1.5] text-paper">
-              {person.positioning}
-            </p>
-            <p className="mt-4 max-w-[33rem] text-body">{person.sub}</p>
-
-            {/* personal I/O — the thesis object */}
-            <div className="module mt-10 max-w-lg">
-              <div className="module__bar">
-                <span className="port text-muted-2">SYS</span>
-                <span className="port text-muted">what goes in / what comes out</span>
-              </div>
-              <div className="module__body flex gap-4">
-                <div className="flex flex-col items-center pt-[0.3rem]" aria-hidden>
-                  <span className="jack jack--in" />
-                  <svg
-                    className="my-1 w-2 flex-1"
-                    width="8"
-                    viewBox="0 0 8 60"
-                    preserveAspectRatio="none"
-                    fill="none"
-                  >
-                    <path
-                      d="M4 0 V60"
-                      className="cable-path"
-                      stroke="var(--color-signal)"
-                      strokeWidth="1.5"
-                      pathLength={1}
-                    />
-                  </svg>
-                  <span className="jack jack--out mb-[0.3rem]" />
-                </div>
-                <div className="min-w-0 flex-1 space-y-4">
-                  <div>
-                    <p className="port text-muted-2">IN</p>
-                    <p className="port mt-1 text-muted">{heroIO.in.join("  ·  ")}</p>
-                  </div>
-                  <div>
-                    <p className="port text-live">OUT</p>
-                    <p className="port mt-1 text-body">{heroIO.out.join("  ·  ")}</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="mt-9 flex flex-wrap items-center gap-3">
-              <a
-                href="#work"
-                className="border border-signal bg-signal/12 px-5 py-3 text-sm font-medium text-paper transition-colors hover:bg-signal/20"
-              >
-                View the work ↓
-              </a>
-              <a
-                href={`mailto:${person.email}`}
-                className="border border-line bg-panel px-5 py-3 text-sm font-medium text-paper transition-colors hover:border-paper/40"
-              >
-                Email me
-              </a>
-            </div>
+      <main>
+        {/* ---------------- cover ---------------- */}
+        <header id="cover" className="cover sheet">
+          <p className="cover__strap">
+            <span>Issue 01</span>
+            <span>{person.location}</span>
+            <span>Portfolio of record</span>
+          </p>
+          <h1 className="cover__masthead">
+            Asim
+            <br />
+            Saeed
+          </h1>
+          <div className="cover__strap mt-3">
+            <span>{person.role}</span>
           </div>
+          <p className="cover__lede mt-8">{person.positioning}</p>
+          <p className="mt-5 max-w-[46ch] text-ink-2">{person.sub}</p>
+        </header>
+
+        {/* ---------------- contents ---------------- */}
+        <section id="contents" className="dept sheet">
+          <h2 className="dept__hed">Contents</h2>
+          <nav className="mt-5" aria-label="Contents">
+            {projects.map((p, i) => (
+              <a key={p.tag} href={`#feature-${p.tag.toLowerCase()}`} className="toc__row">
+                <span className="toc__num">{String(i + 1).padStart(2, "0")}</span>
+                <span className="toc__title">
+                  {p.title}
+                  <span className="toc__kicker">{p.io.out}</span>
+                </span>
+                <span className="folio">{PAGE_OF[`feature-${p.tag.toLowerCase()}`]}</span>
+              </a>
+            ))}
+            {[
+              ["research", "Research and recognition", "The track, the ranking, the hackathon"],
+              ["path", "Curriculum vitae", "Experience, schooling, toolkit"],
+              ["contact", "Masthead", "How to reach the desk"],
+            ].map(([id, title, kicker], i) => (
+              <a key={id} href={`#${id}`} className="toc__row">
+                <span className="toc__num">{String(projects.length + i + 1).padStart(2, "0")}</span>
+                <span className="toc__title">
+                  {title}
+                  <span className="toc__kicker">{kicker}</span>
+                </span>
+                <span className="folio">{PAGE_OF[id]}</span>
+              </a>
+            ))}
+          </nav>
         </section>
 
-        {/* ---------- Work ---------- */}
-        <section id="work" className="zone mt-20 py-16 sm:mt-28 sm:py-20">
-          <div className="wrap">
-            <SectionLabel index="01 / work" title="Selected work" />
-            <div className="space-y-6">
-              {projects.map((p) => (
-                <Reveal as="article" key={p.tag} className="module">
-                  <div className="module__bar">
-                    <span className="port text-muted-2">{p.tag}</span>
-                    <h3 className="text-[1.05rem] font-semibold leading-tight tracking-[-0.01em]">
-                      {p.title}
-                    </h3>
-                  </div>
-                  <div className="module__body">
-                    <p className="text-body">{p.blurb}</p>
+        {/* ---------------- features ---------------- */}
+        {projects.map((p, i) => {
+          // Lift the shortest note as the pull quote; the rest sets as body copy,
+          // so no sentence appears twice on the spread.
+          const pullIdx = p.detail.reduce(
+            (best, d, idx) => (d.length < p.detail[best].length ? idx : best),
+            0,
+          );
+          const pull = p.detail[pullIdx];
+          const bodyParas = p.detail.filter((_, idx) => idx !== pullIdx);
+          return (
+            <article key={p.tag} id={`feature-${p.tag.toLowerCase()}`} className="feature sheet">
+              <p className="feature__kicker">
+                Feature {String(i + 1).padStart(2, "0")} &nbsp;·&nbsp; {p.tag}
+              </p>
+              <h2 className="feature__hed">{p.title}</h2>
+              <p className="feature__dek">{p.io.out}</p>
 
-                    <IOPanel inputs={p.io.in} output={p.io.out} />
+              <div className="feature__grid">
+                <div className="feature__body">
+                  <p className="dropcap">{p.blurb}</p>
+                  {bodyParas.slice(0, 1).map((d) => (
+                    <p key={d}>{d}</p>
+                  ))}
+                  <blockquote className="pull">{pull}</blockquote>
+                  {bodyParas.slice(1).map((d) => (
+                    <p key={d}>{d}</p>
+                  ))}
+                </div>
 
-                    <ul className="mt-4 space-y-2 text-[0.95rem] text-muted">
-                      {p.detail.map((d) => (
-                        <li key={d} className="flex gap-3">
-                          <span aria-hidden className="mt-[0.6em] block h-px w-3 shrink-0 bg-line" />
-                          <span>{d}</span>
-                        </li>
-                      ))}
-                    </ul>
-
-                    <div className="mt-5 flex flex-wrap items-center gap-x-4 gap-y-1">
-                      {p.link && (
-                        <a
-                          href={p.link.href}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="port text-signal-soft underline-offset-4 hover:underline"
-                        >
-                          {p.link.label} ↗
+                <aside className="rail">
+                  <dl className="note">
+                    <dt>Built with</dt>
+                    <dd className="mt-1">{p.io.in.join(", ")}</dd>
+                  </dl>
+                  {p.link && (
+                    <dl className="note">
+                      <dt>Source</dt>
+                      <dd className="mt-1 break-words">
+                        <a href={p.link.href} target="_blank" rel="noopener noreferrer">
+                          {p.link.label}
                         </a>
-                      )}
-                      {p.note && <span className="port text-muted-2">{p.note}</span>}
-                    </div>
-                  </div>
-                </Reveal>
-              ))}
-            </div>
-            <Reveal className="mt-6 border-t border-line pt-4 text-[0.95rem] text-muted">
-              {moreWork.text}{" "}
-              <a
-                href={moreWork.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="port text-signal-soft underline-offset-4 hover:underline"
-              >
-                {moreWork.label} ↗
-              </a>
-            </Reveal>
-          </div>
-        </section>
-
-        {/* ---------- Research ---------- */}
-        <section id="research" className="zone--raised py-16 sm:py-20">
-          <div className="wrap">
-            <SectionLabel index="02 / research" title="Research & recognition" />
-            <ul className="space-y-10">
-              {recognition.map((r, i) => (
-                <Reveal
-                  as="li"
-                  key={r.tag}
-                  delay={i * 70}
-                  className="grid gap-x-5 gap-y-3 sm:grid-cols-[6.5rem_1fr]"
-                >
-                  {r.stat ? (
-                    <div className="stat self-start">
-                      <div className="stat__value">{r.stat.value}</div>
-                      <div className="stat__unit">{r.stat.unit}</div>
-                    </div>
-                  ) : (
-                    <span className="eyebrow pt-1">{r.tag}</span>
+                      </dd>
+                    </dl>
                   )}
+                  {p.note && (
+                    <dl className="note">
+                      <dt>Access</dt>
+                      <dd className="mt-1">{p.note}</dd>
+                    </dl>
+                  )}
+                </aside>
+              </div>
+            </article>
+          );
+        })}
+
+        <p className="sheet py-6 text-ink-3">
+          {moreWork.text}{" "}
+          <a href={moreWork.href} target="_blank" rel="noopener noreferrer">
+            {moreWork.label}
+          </a>
+        </p>
+
+        {/* ---------------- research ---------------- */}
+        <section id="research" className="dept sheet">
+          <p className="feature__kicker">Department</p>
+          <h2 className="dept__hed">Research and recognition</h2>
+          <div className="mt-4">
+            {recognition.map((r) => (
+              <article key={r.tag} className="entry">
+                <div className="two">
                   <div>
-                    <h3 className="text-[1.1rem] font-semibold leading-snug tracking-[-0.01em]">
-                      {r.title}
-                    </h3>
-                    <p className="port mt-1 text-muted-2">
+                    <h3 className="entry__hed">{r.title}</h3>
+                    <p className="entry__meta">
                       {r.org}
-                      {r.since && (
-                        <>
-                          <span aria-hidden className="text-muted-3"> · </span>
-                          since {r.since}
-                        </>
-                      )}
+                      {r.since ? `, since ${r.since}` : ""}
                     </p>
-                    {r.detail && <p className="mt-2.5 text-body">{r.detail}</p>}
-                    {r.io && <IOPanel inputs={r.io.in} output={r.io.out} />}
+                    {r.stat && (
+                      <p className="bignum mt-2">
+                        {r.stat.value}{" "}
+                        <span className="text-[0.8rem] font-normal tracking-normal text-ink-3">
+                          {r.stat.unit}
+                        </span>
+                      </p>
+                    )}
+                  </div>
+                  <div className="mt-2 sm:mt-0">
+                    {r.detail && <p>{r.detail}</p>}
+                    {r.io && (
+                      <dl className="note mt-2">
+                        <dt>Built with</dt>
+                        <dd className="mt-1">{r.io.in.join(", ")}</dd>
+                        <dt className="mt-2">Result</dt>
+                        <dd className="mt-1">{r.io.out}</dd>
+                      </dl>
+                    )}
                     {r.bullets && (
-                      <ul className="mt-4 space-y-2 text-[0.95rem] text-muted">
-                        {r.bullets.map((d) => (
-                          <li key={d} className="flex gap-3">
-                            <span aria-hidden className="mt-[0.6em] block h-px w-3 shrink-0 bg-line" />
-                            <span>{d}</span>
-                          </li>
+                      <ul className="mt-2 list-disc space-y-1 pl-5">
+                        {r.bullets.map((b) => (
+                          <li key={b}>{b}</li>
                         ))}
                       </ul>
                     )}
                   </div>
-                </Reveal>
-              ))}
-            </ul>
+                </div>
+              </article>
+            ))}
           </div>
         </section>
 
-        {/* ---------- Skills ---------- */}
-        <section id="skills" className="py-16 sm:py-20">
-          <div className="wrap">
-            <SectionLabel index="03 / toolkit" title="Toolkit" />
-            <dl className="space-y-7">
-              {skills.map((g, i) => (
-                <Reveal
-                  key={g.label}
-                  delay={i * 60}
-                  className="grid gap-2 sm:grid-cols-[9rem_1fr] sm:gap-6"
-                >
-                  <dt className="eyebrow pt-1.5">{g.label}</dt>
-                  <dd className="flex flex-wrap gap-2">
-                    {g.items.map((it) => (
-                      <span key={it} className="chip">
-                        {it}
-                      </span>
-                    ))}
+        {/* ---------------- curriculum ---------------- */}
+        <section id="path" className="dept sheet">
+          <p className="feature__kicker">Department</p>
+          <h2 className="dept__hed">Curriculum vitae</h2>
+
+          <h3 className="mt-6 text-[0.74rem] tracking-[0.16em] text-crimson [font-variant-caps:all-small-caps]">
+            Experience
+          </h3>
+          {experience.map((e) => (
+            <article key={e.title} className="entry">
+              <div className="two">
+                <div>
+                  <h4 className="entry__hed">{e.title}</h4>
+                  <p className="entry__meta">{e.org}</p>
+                </div>
+                <div className="mt-1 sm:mt-0">
+                  <p className="folio text-[0.85rem]">{e.period}</p>
+                  <p className="mt-1">{e.detail}</p>
+                </div>
+              </div>
+            </article>
+          ))}
+
+          <h3 className="mt-8 text-[0.74rem] tracking-[0.16em] text-crimson [font-variant-caps:all-small-caps]">
+            Education
+          </h3>
+          {education.map((e) => (
+            <article key={e.title} className="entry">
+              <div className="two">
+                <div>
+                  <h4 className="entry__hed">{e.title}</h4>
+                  <p className="entry__meta">{e.org}</p>
+                </div>
+                <p className="folio mt-1 text-[0.85rem] sm:mt-0">
+                  {e.period}
+                  {e.note ? ` · ${e.note}` : ""}
+                </p>
+              </div>
+            </article>
+          ))}
+
+          <h3 className="mt-8 text-[0.74rem] tracking-[0.16em] text-crimson [font-variant-caps:all-small-caps]">
+            Toolkit
+          </h3>
+          <dl className="mt-2">
+            {skills.map((g) => (
+              <div key={g.label} className="entry two">
+                <dt className="entry__hed">{g.label}</dt>
+                <dd className="mt-1 sm:mt-0">{g.items.join(" · ")}</dd>
+              </div>
+            ))}
+          </dl>
+        </section>
+
+        {/* ---------------- masthead ---------------- */}
+        <section id="contact" className="dept sheet">
+          <p className="feature__kicker">Masthead</p>
+          <h2 className="dept__hed">Get in touch</h2>
+          <div className="two mt-4">
+            <p className="feature__dek">
+              Open to software and AI internships, and to contract work on automation
+              or tooling. The fastest way to reach me is email.
+            </p>
+            <dl className="mt-4 sm:mt-0">
+              {(
+                [
+                  ["Email", person.email, `mailto:${person.email}`],
+                  ["Telephone", person.phone, `tel:${person.phoneHref}`],
+                  ["GitHub", person.githubHandle, person.github],
+                  ["LinkedIn", person.linkedinHandle, person.linkedin],
+                  ["Desk", person.location, undefined],
+                ] as [string, string, string | undefined][]
+              ).map(([k, v, href]) => (
+                <div key={k} className="entry flex flex-wrap gap-x-4 py-2">
+                  <dt className="w-24 shrink-0 text-[0.8rem] tracking-[0.1em] text-ink-3 [font-variant-caps:all-small-caps]">
+                    {k}
+                  </dt>
+                  <dd className="min-w-0 break-words">
+                    {href ? (
+                      <a
+                        href={href}
+                        target={href.startsWith("http") ? "_blank" : undefined}
+                        rel="noopener noreferrer"
+                      >
+                        {v}
+                      </a>
+                    ) : (
+                      v
+                    )}
                   </dd>
-                </Reveal>
+                </div>
               ))}
             </dl>
           </div>
         </section>
 
-        {/* ---------- Path (experience + education) ---------- */}
-        <section id="path" className="zone--raised py-16 sm:py-20">
-          <div className="wrap">
-            <SectionLabel index="04 / path" title="Experience & education" />
-
-            <div className="space-y-8">
-              {experience.map((role) => (
-                <Reveal key={role.title} className="grid gap-1 sm:grid-cols-[9rem_1fr] sm:gap-6">
-                  <p className="port pt-1 text-muted-2">{role.period || "—"}</p>
-                  <div>
-                    <h3 className="font-semibold tracking-[-0.01em]">
-                      {role.title}
-                      <span className="font-normal text-muted-2"> · {role.org}</span>
-                    </h3>
-                    <p className="mt-1.5 text-[0.95rem] text-muted">{role.detail}</p>
-                  </div>
-                </Reveal>
-              ))}
-            </div>
-
-            <div className="mt-12 space-y-5 border-t border-line pt-8">
-              {education.map((e) => (
-                <Reveal key={e.title} className="grid gap-1 sm:grid-cols-[9rem_1fr] sm:gap-6">
-                  <p className="port pt-1 text-muted-2">{e.period}</p>
-                  <div className="flex flex-wrap items-baseline justify-between gap-x-4">
-                    <h3 className="font-semibold tracking-[-0.01em]">
-                      {e.title}
-                      <span className="font-normal text-muted-2"> · {e.org}</span>
-                    </h3>
-                    {e.note && <span className="port text-muted">{e.note}</span>}
-                  </div>
-                </Reveal>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* ---------- Contact ---------- */}
-        <section id="contact" className="zone py-16 sm:py-20">
-          <div className="wrap">
-            <SectionLabel index="05 / contact" title="Get in touch" />
-            <Reveal className="grid items-start gap-10 sm:grid-cols-[1fr_auto]">
-              <div>
-                <p className="max-w-[30rem] text-[1.08rem] text-paper">
-                  Open to software and AI internships, and to contract work on
-                  automation or tooling. The fastest way to reach me is email.
-                </p>
-                <div className="mt-8 grid gap-x-6 gap-y-3.5 sm:grid-cols-[7rem_1fr]">
-                  <span className="eyebrow pt-1">Email</span>
-                  <a
-                    href={`mailto:${person.email}`}
-                    className="port text-signal-soft underline-offset-4 hover:underline"
-                  >
-                    {person.email}
-                  </a>
-
-                  <span className="eyebrow pt-1">Phone</span>
-                  <a href={`tel:${person.phoneHref}`} className="port text-body hover:text-paper">
-                    {person.phone}
-                  </a>
-
-                  <span className="eyebrow pt-1">GitHub</span>
-                  <a
-                    href={person.github}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="port text-signal-soft underline-offset-4 hover:underline"
-                  >
-                    {person.githubHandle} ↗
-                  </a>
-
-                  <span className="eyebrow pt-1">LinkedIn</span>
-                  <a
-                    href={person.linkedin}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="port text-signal-soft underline-offset-4 hover:underline"
-                  >
-                    {person.linkedinHandle} ↗
-                  </a>
-
-                  <span className="eyebrow pt-1">Based in</span>
-                  <span className="port text-body">{person.location}</span>
-                </div>
-              </div>
-              <DeployMark className="mt-2 hidden w-[190px] shrink-0 opacity-95 md:block" />
-            </Reveal>
-          </div>
-        </section>
-
-        <footer className="wrap mt-16 border-t border-line pt-6">
-          <p className="port text-muted-2">
-            {person.fullName} · built with Next.js · 2026
+        <footer className="colophon sheet">
+          <p>
+            {person.fullName}. Set in Playfair Display and Source Serif 4. Printed to
+            the web in 2026.
           </p>
         </footer>
       </main>
