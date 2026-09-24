@@ -271,3 +271,61 @@ a {
     transition: none;
   }
 }
+
+/* --- Live connectors: IN to OUT draws on scroll, then a pulse travels down it. --- */
+.io-line {
+  position: relative;
+  background: var(--color-line);
+  overflow: hidden;
+}
+.io-line::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--color-signal);
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform 0.9s cubic-bezier(0.65, 0, 0.35, 1);
+}
+.io-line::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  width: 1px;
+  height: 16px;
+  top: -16px;
+  background: linear-gradient(to bottom, transparent, var(--color-live));
+  opacity: 0;
+}
+.io--on .io-line::before {
+  transform: scaleY(1);
+}
+.io--on .io-line::after {
+  animation: io-pulse 2.8s cubic-bezier(0.45, 0, 0.55, 1) 1s infinite;
+}
+@keyframes io-pulse {
+  0% { top: -16px; opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { top: 100%; opacity: 0; }
+}
+
+.cable-pulse {
+  stroke-dasharray: 0.14 1;
+  stroke-dashoffset: 0.14;
+  animation: cable-pulse 2.6s cubic-bezier(0.45, 0, 0.55, 1) 1.5s infinite;
+}
+@keyframes cable-pulse {
+  from { stroke-dashoffset: 0.14; }
+  to { stroke-dashoffset: -1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .io-line::before {
+    transform: scaleY(1);
+    transition: none;
+  }
+  .io-line::after,
+  .cable-pulse {
+    display: none;
+  }
+}

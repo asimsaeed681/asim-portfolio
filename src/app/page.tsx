@@ -2,6 +2,7 @@ import Reveal from "@/components/Reveal";
 import RailTrace from "@/components/RailTrace";
 import IOPanel from "@/components/IOPanel";
 import DeployMark from "@/components/DeployMark";
+import ProjectViz from "@/components/ProjectViz";
 import {
   person,
   heroIO,
@@ -77,6 +78,13 @@ export default function Page() {
                       strokeWidth="1.5"
                       pathLength={1}
                     />
+                    <path
+                      d="M4 0 V60"
+                      className="cable-pulse"
+                      stroke="var(--color-live)"
+                      strokeWidth="2"
+                      pathLength={1}
+                    />
                   </svg>
                   <span className="jack jack--out mb-[0.3rem]" />
                 </div>
@@ -125,6 +133,8 @@ export default function Page() {
                   </div>
                   <div className="module__body">
                     <p className="text-body">{p.blurb}</p>
+
+                    <ProjectViz tag={p.tag} />
 
                     <IOPanel inputs={p.io.in} output={p.io.out} />
 
