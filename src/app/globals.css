@@ -1,273 +1,393 @@
 @import "tailwindcss";
 
 /*
-  Asim Saeed — portfolio
-  A dark "signal-chain" panel: saturated ultramarine cable against near-black,
-  warm silkscreen text, mono utility type. The recurring motif is the I/O port
-  (IN ─→ OUT), which echoes how the work itself is built: inputs, a transform,
-  a concrete output.
+  concept/terminal-os — the portfolio as a small operating system.
+  Field: near-black CRT void. Ink: phosphor green, with amber reserved for the
+  focused window and the caret. Pixel type for chrome, mono for anything read.
 */
 
 @theme {
-  /* Surface ladder — each step is a visible tonal jump, not just a token rename.
-     base #0e0f14 -> zone #161822 -> zone-2 #1d202a -> panel #282b37 -> panel-2 #2e313d */
-  --color-ink: #0e0f14; /* page base: hero, toolkit */
-  --color-ink-2: #131520; /* gradient tails only */
-  --color-zone: #161822; /* Work, Contact zones (+~10/ch over base) */
-  --color-zone-2: #1d202a; /* Research, Path zones (+~9/ch over --zone) */
-  --color-panel: #282b37; /* module cards, chips (+~11/ch over --zone-2) */
-  --color-panel-2: #2e313d; /* module bars, stat cells */
-  --color-line: #3d4150;
-  --color-line-soft: #2a2d38;
-  --color-paper: #edece7;
-  --color-body: #c8c9d2; /* ~9:1 on the panels */
-  --color-muted: #a3a5b3; /* ~5:1 — secondary text, labels */
-  --color-muted-2: #9a9cab; /* ~4.5:1 on --panel-2 — small labels, still AA */
-  --color-muted-3: #6f7180; /* NON-TEXT only (separators, rules) */
-  --color-signal: #3b5bff;
-  --color-signal-soft: #7288ff;
-  --color-live: #5fe3c7;
+  --color-void: #050805;
+  --color-win: #0a0f0a;
+  --color-chrome: #132016;
+  --color-edge: #1f3a27;
+  --color-phos: #3bf07a;
+  --color-phos-dim: #1f8f4c;
+  --color-amber: #ffb53d;
+  --color-bone: #cfe8d6;
+  --color-bone-dim: #93b39c;
 
-  --font-display: var(--font-bricolage), ui-sans-serif, system-ui, sans-serif;
-  --font-body: var(--font-hanken), ui-sans-serif, system-ui, sans-serif;
-  --font-mono: var(--font-jetbrains), ui-monospace, SFMono-Regular, monospace;
+  --font-pixel-stack: var(--font-pixel), ui-monospace, monospace;
+  --font-mono-stack: var(--font-mono), ui-monospace, SFMono-Regular, monospace;
 }
 
 :root {
   color-scheme: dark;
+  --bar: 30px;
+  --dock: 68px;
 }
 
 * {
-  border-color: var(--color-line);
+  border-color: var(--color-edge);
 }
 
 html {
   -webkit-text-size-adjust: 100%;
-  scroll-behavior: smooth;
 }
 
 body {
-  background-color: var(--color-ink);
-  color: var(--color-paper);
-  font-family: var(--font-body);
-  font-size: 1rem;
-  line-height: 1.62;
+  background-color: var(--color-void);
+  color: var(--color-bone);
+  font-family: var(--font-mono-stack);
+  font-size: 0.875rem;
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
 }
 
 ::selection {
-  background: color-mix(in oklab, var(--color-signal) 45%, transparent);
-  color: #fff;
+  background: var(--color-phos);
+  color: var(--color-void);
 }
 
-/* Focus — visible, on-brand, never removed */
 :focus-visible {
-  outline: 2px solid var(--color-signal-soft);
-  outline-offset: 3px;
-  border-radius: 2px;
+  outline: 2px solid var(--color-amber);
+  outline-offset: 2px;
 }
 
 a {
-  color: inherit;
+  color: var(--color-phos);
   text-decoration: none;
 }
+a:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
 
-/* Skip link — visually hidden until focused */
+.pixel {
+  font-family: var(--font-pixel-stack);
+  letter-spacing: 0.02em;
+  line-height: 1;
+}
+
 .skip-link {
   position: fixed;
-  top: 0.75rem;
-  left: 0.75rem;
-  z-index: 60;
-  transform: translateY(-150%);
-  transition: transform 0.15s ease;
-  background: var(--color-panel-2);
-  border: 1px solid var(--color-signal);
-  color: var(--color-paper);
-  padding: 0.5rem 0.9rem;
-  font-family: var(--font-mono);
-  font-size: 0.8rem;
+  top: 6px;
+  left: 6px;
+  z-index: 200;
+  transform: translateY(-200%);
+  background: var(--color-chrome);
+  border: 1px solid var(--color-phos);
+  color: var(--color-bone);
+  padding: 0.5rem 0.8rem;
 }
 .skip-link:focus {
-  transform: translateY(0);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.001ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.001ms !important;
-  }
-}
-
-/* --- Utility type roles --- */
-.eyebrow {
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
-  font-weight: 500;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--color-muted);
-}
-
-.port {
-  font-family: var(--font-mono);
-  font-size: 0.78rem;
-  line-height: 1.5;
-  letter-spacing: 0.01em;
-}
-
-.display {
-  font-family: var(--font-display);
-  font-weight: 700;
-  letter-spacing: -0.03em;
-  line-height: 0.98;
-}
-
-.wrap {
-  max-width: 42rem;
-  margin-inline: auto;
-  padding-inline: 1.5rem;
-}
-@media (min-width: 640px) {
-  .wrap {
-    padding-inline: 2rem;
-  }
-}
-
-/* --- Zone: full-bleed tint behind a section so the page reads as chunks, not one
-   sheet. Two tiers, each a clearly perceptible step over the page base
-   (--zone ~+10/channel, --zone-2 ~+19/channel). Content stays in the centred
-   column. A hairline top edge sharpens the boundary further. --- */
-.zone {
-  background: var(--color-zone);
-  border-top: 1px solid var(--color-line-soft);
-}
-.zone--raised {
-  background: var(--color-zone-2);
-  border-top: 1px solid var(--color-line-soft);
-}
-
-/* --- Stat: the large-numeral readout for the two figures that matter (150+, 34th).
-   Framed like a panel port so it stays in the site's IN/OUT language. --- */
-.stat {
-  border: 1px solid var(--color-line);
-  background: var(--color-panel-2);
-  padding: 0.6rem 0.85rem 0.7rem;
-  min-width: 5.5rem;
-}
-.stat__value {
-  font-family: var(--font-display);
-  font-weight: 700;
-  letter-spacing: -0.03em;
-  line-height: 1;
-  font-size: 2rem;
-  color: var(--color-paper);
-}
-.stat__unit {
-  font-family: var(--font-mono);
-  font-size: 0.62rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--color-live);
-  margin-top: 0.3rem;
-}
-
-/* --- Chip: one skill, scannable. Mono, bordered, keeps the toolkit in the
-   same material as the modules. --- */
-.chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  font-family: var(--font-mono);
-  font-size: 0.74rem;
-  line-height: 1;
-  letter-spacing: 0.01em;
-  color: var(--color-body);
-  border: 1px solid var(--color-line);
-  background: var(--color-panel);
-  padding: 0.4rem 0.6rem;
-}
-.chip::before {
-  content: "";
-  width: 5px;
-  height: 5px;
-  border-radius: 999px;
-  background: var(--color-signal);
-  flex: none;
-}
-
-/* --- Module: the rack-panel frame shared by the hero I/O and every project --- */
-.module {
-  border: 1px solid var(--color-line);
-  /* sits above every zone tier, so cards read as raised in any section */
-  background:
-    linear-gradient(180deg, var(--color-panel-2) 0%, var(--color-panel) 100%);
-}
-.module__bar {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 0.7rem 1rem;
-  border-bottom: 1px solid var(--color-line);
-  background: var(--color-panel-2);
-}
-.module__body {
-  padding: 1.15rem 1rem 1.25rem;
-}
-.jack {
-  display: inline-block;
-  width: 8px;
-  height: 8px;
-  border-radius: 999px;
-  border: 1px solid currentColor;
-  flex: none;
-}
-.jack--in {
-  color: var(--color-muted);
-}
-.jack--out {
-  color: var(--color-live);
-  background: color-mix(in oklab, var(--color-live) 22%, transparent);
-}
-
-/* --- Hero cable draw --- */
-@keyframes draw {
-  to {
-    stroke-dashoffset: 0;
-  }
-}
-.cable-path {
-  stroke-dasharray: 1;
-  stroke-dashoffset: 1;
-  animation: draw 1s cubic-bezier(0.65, 0, 0.35, 1) 0.25s forwards;
-}
-@media (prefers-reduced-motion: reduce) {
-  .cable-path {
-    stroke-dashoffset: 0;
-    animation: none;
-  }
-}
-
-/* --- Reveal on scroll (fails open: no JS => visible) --- */
-.js .reveal {
-  opacity: 0;
-  transform: translateY(14px);
-  transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
-}
-.reveal.is-in {
-  opacity: 1;
   transform: none;
 }
+
+/* CRT scanlines: above the desktop, below every window, so body text stays crisp. */
+.crt::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgb(0 0 0 / 0.2) 0px,
+    rgb(0 0 0 / 0.2) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+}
 @media (prefers-reduced-motion: reduce) {
-  .reveal {
-    opacity: 1;
-    transform: none;
-    transition: none;
+  .crt::after {
+    background: none;
   }
+}
+
+/* ---------- no-JS / linear fallback: one readable column ---------- */
+.desk {
+  padding: 1.5rem 1.25rem 3rem;
+  max-width: 46rem;
+  margin-inline: auto;
+}
+.win {
+  border: 1px solid var(--color-edge);
+  background: var(--color-win);
+  margin-bottom: 1.5rem;
+}
+.win__bar {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.42rem 0.6rem;
+  background: var(--color-chrome);
+  border-bottom: 1px solid var(--color-edge);
+  color: var(--color-bone-dim);
+}
+.win__body {
+  padding: 1rem 1.05rem 1.15rem;
+  overflow: auto;
+}
+.win__dots {
+  display: flex;
+  gap: 5px;
+}
+.win__dots i {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  border: 1px solid var(--color-edge);
+  background: #0c1410;
+  display: block;
+}
+.win--focus .win__bar {
+  color: var(--color-amber);
+  border-bottom-color: var(--color-phos-dim);
+}
+.win--focus .win__dots i:first-child {
+  background: var(--color-amber);
+  border-color: var(--color-amber);
+}
+
+.bar,
+.dock,
+.home {
+  display: none;
+}
+
+/* ---------- JS desktop (>=900px) ---------- */
+@media (min-width: 900px) {
+  .js body {
+    height: 100dvh;
+    overflow: hidden;
+  }
+  .js .desk {
+    position: relative;
+    height: 100dvh;
+    max-width: none;
+    margin: 0;
+    padding: var(--bar) 0 var(--dock);
+  }
+  .js .win {
+    position: absolute;
+    margin: 0;
+    box-shadow: 0 18px 40px rgb(0 0 0 / 0.55);
+    display: flex;
+    flex-direction: column;
+    height: var(--wh, auto);
+    max-height: calc(100dvh - var(--bar) - var(--dock) - 16px);
+  }
+  .js .win__body {
+    flex: 1;
+    min-height: 0;
+  }
+  .js .win__bar {
+    cursor: grab;
+    user-select: none;
+    touch-action: none;
+  }
+  .js .win__bar:active {
+    cursor: grabbing;
+  }
+  .js .win.is-closed {
+    display: none;
+  }
+
+  .js .bar {
+    display: flex;
+    position: fixed;
+    inset: 0 0 auto 0;
+    height: var(--bar);
+    z-index: 40;
+    align-items: center;
+    gap: 1rem;
+    padding: 0 0.85rem;
+    background: var(--color-chrome);
+    border-bottom: 1px solid var(--color-edge);
+    font-size: 0.62rem;
+  }
+  .js .dock {
+    display: flex;
+    position: fixed;
+    inset: auto 0 0 0;
+    height: var(--dock);
+    z-index: 40;
+    align-items: center;
+    justify-content: center;
+    gap: 0.9rem;
+    padding-bottom: 0.4rem;
+    background: linear-gradient(to top, rgb(5 8 5 / 0.98) 60%, transparent);
+  }
+}
+
+.bar__btn {
+  color: var(--color-bone-dim);
+  padding: 0.25rem 0.4rem;
+}
+.bar__btn[aria-pressed="true"],
+.bar__btn:hover {
+  color: var(--color-phos);
+  background: #0c1710;
+}
+
+.dock__btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  width: 84px;
+  padding: 0.35rem 0.2rem;
+  color: var(--color-bone-dim);
+  font-size: 0.56rem;
+}
+.dock__ic {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border: 1px solid var(--color-edge);
+  background: var(--color-win);
+  color: var(--color-phos);
+  font-size: 0.78rem;
+}
+.dock__btn[aria-pressed="true"] .dock__ic,
+.dock__btn:hover .dock__ic {
+  border-color: var(--color-phos);
+  box-shadow: inset 0 0 0 1px var(--color-phos-dim);
+}
+.dock__btn[aria-pressed="true"] {
+  color: var(--color-phos);
+}
+
+/* ---------- terminal ---------- */
+.tty {
+  font-family: var(--font-mono-stack);
+  font-size: 0.8rem;
+  line-height: 1.55;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.tty--echo {
+  color: var(--color-amber);
+}
+.tty--err {
+  color: #ff8a7a;
+}
+.tty__prompt {
+  color: var(--color-phos);
+}
+.tty__input {
+  flex: 1;
+  background: transparent;
+  border: 0;
+  outline: 0;
+  color: var(--color-bone);
+  font: inherit;
+  caret-color: var(--color-amber);
+  min-width: 0;
+}
+
+/* ---------- phone home screen (JS, <900px) ---------- */
+@media (max-width: 899px) {
+  .js .home {
+    display: flex;
+    flex-direction: column;
+    min-height: 100dvh;
+    padding: 0.4rem 1.1rem 1.6rem;
+  }
+  .js .home__foot {
+    margin-top: auto;
+    padding-top: 2rem;
+    display: grid;
+    gap: 0.9rem;
+    justify-items: start;
+  }
+  .js .home__cta {
+    border: 1px solid var(--color-phos);
+    color: var(--color-phos);
+    padding: 0.7rem 1.1rem;
+    font-size: 0.6rem;
+    text-decoration: none;
+  }
+  .js .home__grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.2rem 0.5rem;
+    margin-top: 1.5rem;
+  }
+  .js .home__app {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    color: var(--color-bone-dim);
+    font-size: 0.56rem;
+    text-align: center;
+  }
+  .js .home__ic {
+    display: grid;
+    place-items: center;
+    width: 54px;
+    height: 54px;
+    border: 1px solid var(--color-edge);
+    background: var(--color-win);
+    color: var(--color-phos);
+    font-size: 1rem;
+  }
+  .js .statusbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.55rem 0.2rem 0;
+    font-size: 0.58rem;
+    color: var(--color-bone-dim);
+  }
+  .js .desk {
+    padding: 0;
+    max-width: none;
+  }
+  .js .win {
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    border: 0;
+  }
+  .js .win__body {
+    flex: 1;
+    min-height: 0;
+  }
+  .js .win.is-closed {
+    display: none;
+  }
+  .js .win__bar {
+    padding: 0.7rem 0.75rem;
+  }
+}
+
+/* ---------- content inside windows ---------- */
+.h {
+  font-family: var(--font-pixel-stack);
+  color: var(--color-phos);
+  font-size: 0.82rem;
+  line-height: 1.35;
+}
+.k {
+  color: var(--color-phos-dim);
+}
+.dim {
+  color: var(--color-bone-dim);
+}
+.rule {
+  border-top: 1px solid var(--color-edge);
+  margin: 1rem 0;
+}
+.tag {
+  border: 1px solid var(--color-edge);
+  color: var(--color-bone-dim);
+  padding: 1px 6px;
+  font-size: 0.68rem;
 }
