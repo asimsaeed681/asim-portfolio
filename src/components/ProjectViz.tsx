@@ -46,7 +46,7 @@ export default function ProjectViz({ tag }: { tag: string }) {
   const { Viz, ratio, extra, caption } = entry;
 
   return (
-    <figure className="mt-5 border border-line bg-ink p-3">
+    <figure className="viz mt-5 border border-line bg-ink p-3">
       <div style={{ containerType: "inline-size" }}>
         <div ref={boxRef} style={{ height: `calc(100cqw * ${ratio} + ${extra ?? "0px"})` }}>
           {near && <Viz />}

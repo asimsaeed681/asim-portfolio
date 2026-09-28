@@ -29,6 +29,7 @@ const description =
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://asimsaeed.me"),
+  alternates: { canonical: "/" },
   title: "Asim Saeed — AI-orchestration systems",
   description,
   keywords: [

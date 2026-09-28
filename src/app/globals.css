@@ -329,3 +329,11 @@ a {
     display: none;
   }
 }
+
+/* The project visuals are client-only (dynamic, ssr:false). Without JS the
+   reserved box would render as an empty framed rectangle under a caption
+   describing something that isn't there, so drop it entirely; the prose and
+   the IO panel already carry the same information. */
+html:not(.js) .viz {
+  display: none;
+}
